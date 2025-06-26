@@ -200,7 +200,7 @@ public class DashboardView extends javax.swing.JFrame {
         jDesktopPane1.removeAll();
         jDesktopPane1.repaint();
 
-        PembuatanAkun akunFrame = new PembuatanAkun();
+        PembuatanAkunView akunFrame = new PembuatanAkunView();
         akunFrame.setSize(jDesktopPane1.getSize());
         akunFrame.setLocation(0, 0);                    
         akunFrame.setVisible(true);
