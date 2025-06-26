@@ -6,23 +6,19 @@
 
 package views.admin.internalframes;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import koperasirbb.utils.DatabaseConnection;
+import controllers.DataNasabahController;
 
 /**
  *
  * @author Aziz
  */
-public class DataNasabah extends javax.swing.JInternalFrame {
+public class DataNasabahView extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form DataNasabah
      */
-    public DataNasabah() {
+    public DataNasabahView() {
         initComponents();
         loadDataNasabah();
         
@@ -40,28 +36,14 @@ public class DataNasabah extends javax.swing.JInternalFrame {
     model.addColumn("Nama");
     model.addColumn("Username");
     model.addColumn("Status");
-
-    try (Connection conn = DatabaseConnection.connect()) {
-        String sql = "SELECT n.id_nasabah, j.nama_jabatan, n.nama AS nama_lengkap, n.username, n.status " +
-                     "FROM nasabah n JOIN jabatan j ON n.id_jabatan = j.id_jabatan";
-        PreparedStatement stmt = conn.prepareStatement(sql);
-        ResultSet rs = stmt.executeQuery();
-
-        while (rs.next()) {
-            model.addRow(new Object[]{
-                rs.getInt("id_nasabah"),
-                rs.getString("nama_jabatan"),
-                rs.getString("nama_lengkap"),
-                rs.getString("username"),
-                rs.getString("status")
-            });
-        }
-
-        jTable1.setModel(model);
-
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Gagal memuat data: " + e.getMessage());
+    
+    String[][] dataNasabah = DataNasabahController.getAllNasabah();
+    
+    for (Object[] row : dataNasabah) {
+        model.addRow(row);
     }
+    
+    jTable1.setModel(model);
 }
 
     

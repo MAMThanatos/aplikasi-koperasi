@@ -8,6 +8,7 @@ package views.admin;
 
 import javax.swing.JOptionPane;
 import views.admin.internalframes.*;
+import views.LoginView;
 
 /**
  *
@@ -214,7 +215,7 @@ public class DashboardView extends javax.swing.JFrame {
         jDesktopPane1.removeAll();
         jDesktopPane1.repaint();
 
-        DataNasabah dataFrame = new DataNasabah();
+        DataNasabahView dataFrame = new DataNasabahView();
         dataFrame.setSize(jDesktopPane1.getSize());
         dataFrame.setLocation(0, 0);                    
         dataFrame.setVisible(true);
@@ -256,7 +257,7 @@ public class DashboardView extends javax.swing.JFrame {
                 JOptionPane.QUESTION_MESSAGE);
 
         if (konfirmasi == JOptionPane.YES_OPTION) {
-            new LoginApp().setVisible(true);
+            new LoginView().setVisible(true);
             dispose();
         }
     }//GEN-LAST:event_jButton6ActionPerformed

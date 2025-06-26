@@ -9,12 +9,40 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import utils.DatabaseConnection;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  *
  * @author wtf
  */
+
 public class NasabahModel {
+    public static String[][] getAllNasabah() {
+        List<String[]> nasabahList = new ArrayList<>();
+
+        try (Connection conn = DatabaseConnection.connect()) {
+            String query = "SELECT n.id_nasabah, j.nama_jabatan, n.nama_lengkap AS nama, n.username, n.status " +
+                           "FROM nasabah n JOIN jabatan j ON n.id_jabatan = j.id_jabatan";
+            try (PreparedStatement stmt = conn.prepareStatement(query)) {
+                ResultSet rs = stmt.executeQuery();
+                while (rs.next()) {
+                    String[] row = new String[5];
+                    row[0] = rs.getString("id_nasabah");
+                    row[1] = rs.getString("nama_jabatan");
+                    row[2] = rs.getString("nama");
+                    row[3] = rs.getString("username");
+                    row[4] = rs.getString("status");
+                    nasabahList.add(row);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return nasabahList.toArray(String[][]::new);
+    }
+    
     public static String getUsername(String username) {
         try (Connection conn = DatabaseConnection.connect()) {
             String query = "SELECT username FROM nasabah WHERE username = ?";
