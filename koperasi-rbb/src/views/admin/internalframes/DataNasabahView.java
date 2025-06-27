@@ -30,7 +30,13 @@ public class DataNasabahView extends javax.swing.JInternalFrame {
     }
 
     private void loadDataNasabah() {
-    DefaultTableModel model = new DefaultTableModel();
+    DefaultTableModel model = new DefaultTableModel() {
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return false;
+        }  
+    };
+    
     model.addColumn("ID");
     model.addColumn("Jabatan");
     model.addColumn("Nama");
