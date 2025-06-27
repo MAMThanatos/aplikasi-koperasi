@@ -91,7 +91,13 @@ public class PinjamanView extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void loadPinjaman() {
-        DefaultTableModel model = new DefaultTableModel();
+        DefaultTableModel model = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return column == 7;
+            }         
+        };
+        
         model.addColumn("ID");
         model.addColumn("Nasabah");
         model.addColumn("Nominal");

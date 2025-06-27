@@ -9,6 +9,7 @@ import enums.StatusPinjamanEnum;
 import java.util.List;
 import models.PinjamanModel;
 import models.AngsuranModel;
+import models.SimpananModel;
 
 /**
  *
@@ -25,21 +26,22 @@ public class PinjamanController {
     }
     
     public static boolean setujuiPinjaman(int idPinjaman) {
-        boolean success = PinjamanModel.setStatus(idPinjaman, StatusPinjamanEnum.DISETUJUI);
+        int totalSimpanan = SimpananModel.getTotalSimpanan();
+        int nominal = PinjamanModel.getNominalById(idPinjaman);
         
-        if(!success) return false;
-        boolean angsuranStatus = buatAngsuran(idPinjaman);
+        if(nominal > totalSimpanan) return false;
+
+        int tenor = PinjamanModel.getTenorById(idPinjaman);
+        boolean angsuranStatus = buatAngsuran(idPinjaman, nominal, tenor);
         
         if(!angsuranStatus) {
             PinjamanModel.setStatus(idPinjaman, StatusPinjamanEnum.MENUNGGU);
         }
         
-       return true;
+        return PinjamanModel.setStatus(idPinjaman, StatusPinjamanEnum.DISETUJUI);
     }
     
-    private static boolean buatAngsuran(int idPinjaman) {
-        int tenor = PinjamanModel.getTenorById(idPinjaman);
-        int nominal = PinjamanModel.getNominalById(idPinjaman);
+    private static boolean buatAngsuran(int idPinjaman, int nominal, int tenor) {
         int cicilan = nominal / tenor;
 
         boolean hasCreatedAny = false;
