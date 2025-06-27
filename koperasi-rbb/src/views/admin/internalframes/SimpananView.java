@@ -11,6 +11,9 @@ import java.sql.PreparedStatement;
 import javax.swing.JOptionPane;
 import utils.DatabaseConnection;
 
+import controllers.SimpananController;
+import java.sql.Date;
+
 /**
  *
  * @author Aziz
@@ -28,9 +31,9 @@ public class SimpananView extends javax.swing.JInternalFrame {
     private com.toedter.calendar.JDateChooser dateChooser;
 
     private void clearForm() {
-    jTextField1.setText("");      
-    jTextField2.setText("");             
-    jDateChooser1.setDate(null);             
+        jTextField1.setText("");      
+        jTextField2.setText("");             
+        jDateChooser1.setDate(null);             
     }
 
     
@@ -123,41 +126,34 @@ public class SimpananView extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
         String idNasabahStr = jTextField1.getText().trim();
         String nominalStr = jTextField2.getText().trim();
         java.util.Date selectedDate = jDateChooser1.getDate();
 
-        // Validasi input
         if (idNasabahStr.isEmpty() || nominalStr.isEmpty() || selectedDate == null) {
-            JOptionPane.showMessageDialog(null, "Semua field wajib diisi!");
+            JOptionPane.showMessageDialog(this, "Semua field wajib diisi!");
             return;
         }
 
         try {
             int idNasabah = Integer.parseInt(idNasabahStr);
             int nominal = Integer.parseInt(nominalStr);
-            java.sql.Date sqlDate = new java.sql.Date(selectedDate.getTime());
+            Date tglUangMasuk = new java.sql.Date(selectedDate.getTime());
 
-            String sql = "INSERT INTO simpanan (id_nasabah, nominal_simpanan, tgl_uang_masuk) VALUES (?, ?, ?)";
+            boolean success = SimpananController.insertSimpanan(idNasabah, nominal, tglUangMasuk);
 
-            try (Connection conn = DatabaseConnection.connect();
-                 PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-                stmt.setInt(1, idNasabah);
-                stmt.setInt(2, nominal);
-                stmt.setDate(3, sqlDate);
-
-                stmt.executeUpdate();
-
-                JOptionPane.showMessageDialog(null, "Data simpanan berhasil disimpan.");
-                clearForm();
-
+            if (!success) {
+                JOptionPane.showMessageDialog(this, "Gagal menambahkan simpanan!");
+                return;
             }
+
+            JOptionPane.showMessageDialog(this, "Berhasil menambahkan simpanan!");
+            clearForm();
+
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "ID Nasabah dan Nominal harus berupa angka.");
+            JOptionPane.showMessageDialog(this, "ID Nasabah dan Nominal harus berupa angka.");
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Gagal menyimpan: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, "Gagal menyimpan: " + e.getMessage());
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
