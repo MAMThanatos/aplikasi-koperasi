@@ -42,7 +42,7 @@ public class LoginView extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/width_550.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/img/width_550.png"))); // NOI18N
         jLabel1.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
         jLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
@@ -122,6 +122,7 @@ public class LoginView extends javax.swing.JFrame {
         
         if("Admin".equals(role)) {
             success = LoginController.verifyAdmin(username, password);
+            new DashboardView().setVisible(true);
         } else if("Nasabah".equals(role)) {
             success = LoginController.verifyNasabah(username, password);
         }
@@ -131,7 +132,6 @@ public class LoginView extends javax.swing.JFrame {
             return;
         }
         
-        new DashboardView().setVisible(true);
         dispose();
     }//GEN-LAST:event_loginBtnActionPerformed
 

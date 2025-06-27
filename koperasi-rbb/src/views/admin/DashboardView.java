@@ -84,7 +84,7 @@ public class DashboardView extends javax.swing.JFrame {
         );
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/1685511539554.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/img/1685511539554.png"))); // NOI18N
 
         jPanel2.setBackground(new java.awt.Color(204, 204, 255));
 
@@ -229,7 +229,7 @@ public class DashboardView extends javax.swing.JFrame {
         jDesktopPane1.removeAll();
         jDesktopPane1.repaint();
 
-        Simpanan simpanFrame = new Simpanan();
+        SimpananView simpanFrame = new SimpananView();
         simpanFrame.setSize(jDesktopPane1.getSize());
         simpanFrame.setLocation(0, 0);                    
         simpanFrame.setVisible(true);
@@ -240,7 +240,16 @@ public class DashboardView extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
+        jDesktopPane1.removeAll();
+        jDesktopPane1.repaint();
         
+        PinjamanView pinjamanFrame = new PinjamanView();
+        pinjamanFrame.setSize(jDesktopPane1.getSize());
+        pinjamanFrame.setLocation(0, 0);
+        pinjamanFrame.setVisible(true);
+        
+        jDesktopPane1.add(pinjamanFrame);
+        pinjamanFrame.toFront();        
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed

@@ -79,7 +79,7 @@
       <Properties>
         <Property name="horizontalAlignment" type="int" value="0"/>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/img/width_550.png"/>
+          <Image iconType="3" name="/assets/img/width_550.png"/>
         </Property>
         <Property name="verticalAlignment" type="int" value="3"/>
         <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">

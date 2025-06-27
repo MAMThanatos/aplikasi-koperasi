@@ -9,18 +9,18 @@ package views.admin.internalframes;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import javax.swing.JOptionPane;
-import koperasirbb.utils.DatabaseConnection;
+import utils.DatabaseConnection;
 
 /**
  *
  * @author Aziz
  */
-public class Simpanan extends javax.swing.JInternalFrame {
+public class SimpananView extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form Simpanan
      */
-    public Simpanan() {
+    public SimpananView() {
         initComponents();
         clearForm();
     }
@@ -126,7 +126,7 @@ public class Simpanan extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         String idNasabahStr = jTextField1.getText().trim();
         String nominalStr = jTextField2.getText().trim();
-        java.util.Date selectedDate = dateChooser.getDate();
+        java.util.Date selectedDate = jDateChooser1.getDate();
 
         // Validasi input
         if (idNasabahStr.isEmpty() || nominalStr.isEmpty() || selectedDate == null) {
