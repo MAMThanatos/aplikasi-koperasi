@@ -122,7 +122,8 @@ public class LoginView extends javax.swing.JFrame {
         
         if("Admin".equals(role)) {
             success = LoginController.verifyAdmin(username, password);
-            new DashboardView().setVisible(true);
+            
+            if(success) new DashboardView().setVisible(true);
         } else if("Nasabah".equals(role)) {
             success = LoginController.verifyNasabah(username, password);
         }
