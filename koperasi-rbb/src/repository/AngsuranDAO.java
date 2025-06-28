@@ -42,7 +42,7 @@ public class AngsuranDAO {
     public static List<AngsuranModel> getByPinjamanId(int idPinjaman) {
         List<AngsuranModel> list = new ArrayList<>();
         String query = "SELECT a.id_angsuran, a.id_pinjaman, a.angsuran_ke, a.nominal_angsuran, a.tgl_pembayaran, mp.nama_metode_pembayaran, a.status " +
-                       "FROM angsuran a JOIN metode_pembayaran mp ON a.id_metode_pembayaran = mp.id_metode_pembayaran " +
+                       "FROM angsuran a LEFT JOIN metode_pembayaran mp ON a.id_metode_pembayaran = mp.id_metode_pembayaran " +
                        "WHERE a.id_pinjaman = ? ORDER BY angsuran_ke";
 
         try (Connection conn = DatabaseConnection.connect();
