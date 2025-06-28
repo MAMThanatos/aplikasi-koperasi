@@ -8,11 +8,15 @@ import controllers.PinjamanController;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.table.DefaultTableModel;
 import views.customComponents.TableActionCellEditor;
 import views.customComponents.TableActionCellRender;
 import views.customComponents.TableActionEvent;
+import models.PinjamanModel;
+import models.AngsuranModel;
+import controllers.AngsuranController;
 
 /**
  *
@@ -89,6 +93,7 @@ public class PinjamanView extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+// </editor-fold>                        
 
     private void loadPinjaman() {
         DefaultTableModel model = new DefaultTableModel() {
@@ -103,28 +108,28 @@ public class PinjamanView extends javax.swing.JInternalFrame {
         model.addColumn("Nominal");
         model.addColumn("Alasan");
         model.addColumn("Tenor (Bulan)");
-        model.addColumn("Tanggal");
+        model.addColumn("Tanggal Pengajuan");
         model.addColumn("Status");
         model.addColumn("Aksi");
        
-        List<String[]> pinjamanList = PinjamanController.getAllPinjaman();
+        List<PinjamanModel> pinjamanList = PinjamanController.getAllPinjaman();
         
-        for (String[] row : pinjamanList) {
+        for (PinjamanModel pinjaman : pinjamanList) {
             Object[] rowData = new Object[8];
-            rowData[0] = row[0];
-            rowData[1] = row[1];
-            rowData[2] = row[2];
-            rowData[3] = row[3];
-            rowData[4] = row[4];
-            rowData[5] = row[5];
-            rowData[6] = row[6];
+            rowData[0] = pinjaman.getId();
+            rowData[1] = pinjaman.getNamaNasabah();
+            rowData[2] = pinjaman.getNominalPinjaman();
+            rowData[3] = pinjaman.getKeterangan();
+            rowData[4] = pinjaman.getTenor();
+            rowData[5] = pinjaman.getTanggalPengajuan();
+            rowData[6] = pinjaman.getStatus();
 
             model.addRow(rowData);
         }
         
         jTable1.setModel(model);
     }
-    
+       
     private void renderPanelAction() {
         TableActionEvent ev = new TableActionEvent() {
             @Override
@@ -168,7 +173,7 @@ public class PinjamanView extends javax.swing.JInternalFrame {
                 String status = jTable1.getValueAt(row, 6).toString();
 
                 String detail = String.format(
-                    "ID: %s\nNasabah: %s\nNominal: %s\nTenor: %s bulan\nTanggal: %s\nStatus: %s\n\nAlasan:\n%s",
+                    "ID: %s\nNasabah: %s\nNominal: %s\nTenor: %s bulan\nTanggal Pengajuan: %s\nStatus: %s\n\nKeterangan:\n%s",
                     id, nasabah, nominal, tenor, tanggal, status, alasan
                 );
 
@@ -177,15 +182,54 @@ public class PinjamanView extends javax.swing.JInternalFrame {
                 textArea.setLineWrap(true);
                 textArea.setEditable(false);
                 textArea.setCaretPosition(0);
+                JScrollPane detailScroll = new JScrollPane(textArea);
+                
+                javax.swing.JPanel panel = new javax.swing.JPanel();
+                panel.setLayout(new javax.swing.BoxLayout(panel, javax.swing.BoxLayout.Y_AXIS));
+                panel.add(detailScroll);
 
-                JScrollPane scrollPane = new JScrollPane(textArea);
-                scrollPane.setPreferredSize(new java.awt.Dimension(400, 250)); 
+                // Hanya tampilkan tabel angsuran jika status == DISETUJUI
+                if (status.equalsIgnoreCase("DISETUJUI")) {
+                    detailScroll.setPreferredSize(new java.awt.Dimension(580, 150));
+                    
+                    JTable table = new JTable();
+                    DefaultTableModel model = new DefaultTableModel(
+                        new Object[]{"ID", "Angsuran Ke", "Tagihan", "Tanggal Pembayaran", "Status"}, 0
+                    );
 
-                JOptionPane.showMessageDialog(
+                    List<AngsuranModel> angsuranList = AngsuranController.getAllAngsuranByIdPinjaman(Integer.parseInt(id));
+                    for (AngsuranModel angsuran : angsuranList) {
+                        model.addRow(new Object[]{
+                            angsuran.getId(),
+                            angsuran.getAngsuranke(),
+                            angsuran.getNominalAngsuran(),
+                            angsuran.getTanggalAngsuran() != null ? angsuran.getTanggalAngsuran().toString() : "-",
+                            angsuran.getStatus()
+                        });
+                    }
+
+                    table.setModel(model);
+                    table.setEnabled(false);
+                    JScrollPane tableScroll = new JScrollPane(table);
+                    tableScroll.setPreferredSize(new java.awt.Dimension(580, 200));
+
+                    panel.add(javax.swing.Box.createVerticalStrut(10)); // jarak antar komponen
+                    panel.add(tableScroll);
+                } else {
+                    detailScroll.setPreferredSize(new java.awt.Dimension(580, 300));
+
+                }
+
+                // Tampilkan dialog
+                JOptionPane.showOptionDialog(
                     PinjamanView.this,
-                    scrollPane,
+                    panel,
                     "Detail Pinjaman",
-                    JOptionPane.INFORMATION_MESSAGE
+                    JOptionPane.DEFAULT_OPTION,
+                    JOptionPane.PLAIN_MESSAGE,
+                    null,
+                    new Object[]{"tutup"},
+                    "tutup"
                 );
             }
         };

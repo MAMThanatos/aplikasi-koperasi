@@ -5,44 +5,98 @@
 package models;
 
 import enums.StatusAngsuranEnum;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import utils.DatabaseConnection;
+import java.util.Date;
 /**
  *
  * @author wtf
  */
 public class AngsuranModel {
-    public static boolean insertAngsuran(int idPinjaman, int bulanKe, int nominal, StatusAngsuranEnum status) {
-        try (Connection conn = DatabaseConnection.connect()) {
-            String query = "INSERT INTO angsuran (id_pinjaman, bulan_ke, nominal_angsuran, status) VALUES (?, ?, ?, ?)";
-            try (PreparedStatement stmt = conn.prepareStatement(query)) {
-                stmt.setInt(1, idPinjaman);
-                stmt.setInt(2, bulanKe);
-                stmt.setInt(3, nominal);
-                stmt.setString(4, status.getLabel());
-                
-                int affected = stmt.executeUpdate();
-                return affected > 0;
-            }
-        } catch (SQLException e) {
-            System.err.println(e);
-        }
-        
-        return false;
+    private int id;
+    private int idPinjaman;
+    private String MetodePembayaran;
+    private int idMetodePembayaran;
+    private int angsuranKe;
+    private int nominalAngsuran;
+    private Date tanggalAngsuran;
+    private String status;
+    
+    public AngsuranModel() {
+    }
+
+    public AngsuranModel(int id, int idPinjaman, String MetodePembayaran, int idMetodePembayaran, int angsuranKe, int nominalAngsuran, Date tanggalAngsuran, String status) {
+        this.id = id;
+        this.idPinjaman = idPinjaman;
+        this.MetodePembayaran = MetodePembayaran;
+        this.idMetodePembayaran = idMetodePembayaran;
+        this.angsuranKe = angsuranKe;
+        this.nominalAngsuran = nominalAngsuran;
+        this.tanggalAngsuran = tanggalAngsuran;
+        this.status = status;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getIdPinjaman() {
+        return idPinjaman;
+    }
+
+    public void setIdPinjaman(int idPinjaman) {
+        this.idPinjaman = idPinjaman;
+    }
+
+    public String getMetodePembayaran() {
+        return MetodePembayaran;
+    }
+
+    public void setMetodePembayaran(String MetodePembayaran) {
+        this.MetodePembayaran = MetodePembayaran;
     }
     
-    public static boolean deleteAllByPinjamanId(int idPinjaman) {
-        String query = "DELETE FROM angsuran WHERE id_pinjaman = ?";
-        try (Connection conn = DatabaseConnection.connect();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setInt(1, idPinjaman);
-            stmt.executeUpdate();
-            return true;
-        } catch (SQLException e) {
-            System.err.println("Gagal menghapus angsuran: " + e.getMessage());
-            return false;
-        }
+    
+
+    public int getIdMetodePembayaran() {
+        return idMetodePembayaran;
+    }
+
+    public void setIdMetodePembayaran(int idMetodePembayaran) {
+        this.idMetodePembayaran = idMetodePembayaran;
+    }
+
+    public int getAngsuranke() {
+        return angsuranKe;
+    }
+
+    public void setAngsuranKe(int angsuranKe) {
+        this.angsuranKe = angsuranKe;
+    }
+
+    public int getNominalAngsuran() {
+        return nominalAngsuran;
+    }
+
+    public void setNominalAngsuran(int nominalAngsuran) {
+        this.nominalAngsuran = nominalAngsuran;
+    }
+
+    public Date getTanggalAngsuran() {
+        return tanggalAngsuran;
+    }
+
+    public void setTanggalAngsuran(Date tanggalAngsuran) {
+        this.tanggalAngsuran = tanggalAngsuran;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusAngsuranEnum status) {
+        this.status = status.getLabel();
     }
 }

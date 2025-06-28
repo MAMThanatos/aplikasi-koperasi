@@ -5,15 +5,15 @@
 package controllers;
 
 import java.util.List;
-import repository.NasabahDAO;
-import models.NasabahModel;
-        
+
+import models.AngsuranModel;
+import repository.AngsuranDAO;
 /**
  *
  * @author wtf
  */
-public class DataNasabahController {
-    public static List<NasabahModel> getAllNasabah() {
-        return NasabahDAO.getAll();
+public class AngsuranController {
+    public static List<AngsuranModel> getAllAngsuranByIdPinjaman(int idPinjaman) {
+        return AngsuranDAO.getByPinjamanId(idPinjaman);
     }
 }

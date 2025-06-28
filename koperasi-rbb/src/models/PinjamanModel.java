@@ -12,87 +12,106 @@ import java.util.ArrayList;
 import java.util.List;
 import utils.DatabaseConnection;
 import enums.StatusPinjamanEnum;
+import java.util.Date;
 
 /**
  *
  * @author wtf
  */
 public class PinjamanModel {
-    public static List<String[]> getAllPinjaman() {
-        List<String[]> pinjamanList = new ArrayList<>();
+    private int id;
+    private int idNasabah;
+    private String namaNasabah;
+    private int nominalPinjaman;
+    private int tenor;
+    private String keterangan;
+    private Date tanggalPengajuan;
+    private String status;
+    private Date tanggalStatus;
+ 
+    public PinjamanModel() {
+    }
 
-        try (Connection conn = DatabaseConnection.connect()) {
-            String query = "SELECT p.id_pinjaman, n.nama_lengkap, p.nominal_pinjaman, p.alasan_pengajuan, p.tenor, p.tgl_pengajuan, sp.status " +
-                           "FROM pinjaman p JOIN status_pinjaman sp ON p.id_pinjaman = sp.id_pinjaman " +
-                           "JOIN nasabah n ON p.id_nasabah = n.id_nasabah";
-            try (PreparedStatement stmt = conn.prepareStatement(query)) {
-                ResultSet rs = stmt.executeQuery();
-                while (rs.next()) {
-                    String[] row = new String[8];
-                    row[0] = rs.getString("id_pinjaman");
-                    row[1] = rs.getString("nama_lengkap");
-                    row[2] = rs.getString("nominal_pinjaman");
-                    row[3] = rs.getString("alasan_pengajuan");
-                    row[4] = rs.getString("tenor");
-                    row[5] = rs.getString("tgl_pengajuan");
-                    row[6] = rs.getString("status");
+    public PinjamanModel(int id, int idNasabah, int nominalPinjaman, int tenor, String keterangan, Date tanggalPengajuan) {
+        this.id = id;
+        this.idNasabah = idNasabah;
+        this.nominalPinjaman = nominalPinjaman;
+        this.tenor = tenor;
+        this.keterangan = keterangan;
+        this.tanggalPengajuan = tanggalPengajuan;
+    }
 
-                    pinjamanList.add(row);
-                }
-            }
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
-        
-        return pinjamanList;
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getIdNasabah() {
+        return idNasabah;
+    }
+
+    public void setIdNasabah(int idNasabah) {
+        this.idNasabah = idNasabah;
+    }
+
+    public String getNamaNasabah() {
+        return namaNasabah;
+    }
+
+    public void setNamaNasabah(String namaNasabah) {
+        this.namaNasabah = namaNasabah;
     }
     
-    public static int getNominalById(int idPinjaman) {
-        try (Connection conn = DatabaseConnection.connect()) {
-            String query = "SELECT nominal_pinjaman FROM pinjaman WHERE id_pinjaman = ?";
-            try (PreparedStatement stmt = conn.prepareStatement(query)) {
-                stmt.setInt(1, idPinjaman);
-                ResultSet rs = stmt.executeQuery();
-                if (rs.next()) {
-                    return rs.getInt("nominal_pinjaman");
-                }
-            }
-        } catch (SQLException e) {
-            System.err.println(e);
-        }
-        return 0;
-    }
     
-    public static int getTenorById(int idPinjaman) {
-          try (Connection conn = DatabaseConnection.connect()) {
-            String query = "SELECT tenor FROM pinjaman WHERE id_pinjaman = ?";
-            try (PreparedStatement stmt = conn.prepareStatement(query)) {
-                stmt.setInt(1, idPinjaman);
-                ResultSet rs = stmt.executeQuery();
-                if (rs.next()) {
-                    return rs.getInt("tenor");
-                }
-            }
-        } catch (SQLException e) {
-            System.err.println(e);
-        }
-        return -1;
+
+    public String getKeterangan() {
+        return keterangan;
     }
-    
-    public static boolean setStatus(int idPinjaman, StatusPinjamanEnum status) {
-        try (Connection conn = DatabaseConnection.connect()) {
-            String query = "UPDATE status_pinjaman SET status = ? WHERE id_pinjaman = ?";
-            try (PreparedStatement stmt = conn.prepareStatement(query)) {
-                stmt.setString(1, status.name());
-                stmt.setInt(2, idPinjaman);
-        
-                int affected = stmt.executeUpdate();
-                return affected > 0;
-            }
-        } catch(SQLException e) {
-            System.out.println(e);
-        }
-        
-        return false;
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
+    }
+
+    public int getNominalPinjaman() {
+        return nominalPinjaman;
+    }
+
+    public void setNominalPinjaman(int nominalPinjaman) {
+        this.nominalPinjaman = nominalPinjaman;
+    }
+
+    public Date getTanggalPengajuan() {
+        return tanggalPengajuan;
+    }
+
+    public void setTanggalPengajuan(Date tanggalPengajuan) {
+        this.tanggalPengajuan = tanggalPengajuan;
+    }
+
+    public int getTenor() {
+        return tenor;
+    }
+
+    public void setTenor(int tenor) {
+        this.tenor = tenor;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusPinjamanEnum status) {
+        this.status = status.getLabel();
+    }
+
+    public Date getTanggalStatus() {
+        return tanggalStatus;
+    }
+
+    public void setTanggalStatus(Date tanggalStatus) {
+        this.tanggalStatus = tanggalStatus;
     }
 }

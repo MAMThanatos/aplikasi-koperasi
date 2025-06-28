@@ -6,13 +6,17 @@
 
 package views.admin.internalframes;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
+import controllers.DataNasabahController;
 import javax.swing.JOptionPane;
-import utils.DatabaseConnection;
 
 import controllers.SimpananController;
 import java.sql.Date;
+import java.util.List;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.table.DefaultTableModel;
+import models.NasabahModel;
 
 /**
  *
@@ -26,6 +30,12 @@ public class SimpananView extends javax.swing.JInternalFrame {
     public SimpananView() {
         initComponents();
         clearForm();
+        jTextField1.setEditable(false); // Biar ga diketik manual (optional)
+        jTextField1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                showNasabahTableDialog();
+            }
+        });
     }
     
     private com.toedter.calendar.JDateChooser dateChooser;
@@ -164,6 +174,47 @@ public class SimpananView extends javax.swing.JInternalFrame {
             clearForm();
         }
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void showNasabahTableDialog() {
+        // Ambil data nasabah dari controller (buat dulu controllernya kalau belum ada)
+        List<NasabahModel> nasabahList = DataNasabahController.getAllNasabah();
+
+        String[] columnNames = {"ID", "Nama Lengkap", "Username"};
+        DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+
+        for (NasabahModel nasabah : nasabahList) {
+            Object[] row = {
+                nasabah.getId(),
+                nasabah.getNama(),
+                nasabah.getUsername()
+            };
+            tableModel.addRow(row);
+        }
+
+        JTable table = new JTable(tableModel);
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        JScrollPane scrollPane = new JScrollPane(table);
+        scrollPane.setPreferredSize(new java.awt.Dimension(500, 300));
+
+        // Bikin dialog
+        int result = JOptionPane.showConfirmDialog(
+            this, scrollPane, "Pilih Nasabah", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE
+        );
+
+        if (result == JOptionPane.OK_OPTION) {
+            int selectedRow = table.getSelectedRow();
+            if (selectedRow >= 0) {
+                String selectedId = table.getValueAt(selectedRow, 0).toString();
+                jTextField1.setText(selectedId);
+            }
+        }
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -1,0 +1,137 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package repository;
+
+import enums.StatusPinjamanEnum;
+import java.util.ArrayList;
+import java.util.List;
+import models.PinjamanModel;
+import utils.DatabaseConnection;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+/**
+ *
+ * @author wtf
+ */
+public class PinjamanDAO {
+    public static boolean insert(PinjamanModel pinjaman) {
+        return true;
+    }
+    
+    public static List<PinjamanModel> getAll() {
+        List<PinjamanModel> list = new ArrayList<>();
+         try (Connection conn = DatabaseConnection.connect()) {
+            String query = "SELECT p.id_pinjaman, n.nama_lengkap, p.nominal_pinjaman, p.alasan_pengajuan, p.tenor, p.tgl_pengajuan, sp.status " +
+                           "FROM pinjaman p JOIN status_pinjaman sp ON p.id_pinjaman = sp.id_pinjaman " +
+                           "JOIN nasabah n ON p.id_nasabah = n.id_nasabah";
+            
+            try (PreparedStatement stmt = conn.prepareStatement(query)) {
+                ResultSet rs = stmt.executeQuery();
+                while (rs.next()) {
+                    PinjamanModel pinjaman = new PinjamanModel();
+                    pinjaman.setId(rs.getInt("id_pinjaman"));
+                    pinjaman.setNamaNasabah(rs.getString("nama_lengkap"));
+                    pinjaman.setNominalPinjaman(rs.getInt("nominal_pinjaman"));
+                    pinjaman.setKeterangan(rs.getString("alasan_pengajuan"));
+                    pinjaman.setTenor(rs.getInt("tenor"));
+                    pinjaman.setTanggalPengajuan(rs.getDate("tgl_pengajuan"));
+                    pinjaman.setStatus(StatusPinjamanEnum.fromString(rs.getString("status")));
+                    
+                    list.add(pinjaman);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+         
+        return list;
+    }
+    
+    public static List<PinjamanModel> getByStatus(StatusPinjamanEnum status) {
+        List<PinjamanModel> list = new ArrayList<>();
+        
+        try (Connection conn = DatabaseConnection.connect()) {
+            String query = "SELECT p.id_pinjaman, n.nama_lengkap, p.nominal_pinjaman, p.alasan_pengajuan, p.tenor, p.tgl_pengajuan, sp.status " +
+                           "FROM pinjaman p JOIN status_pinjaman sp ON p.id_pinjaman = sp.id_pinjaman " +
+                           "JOIN nasabah n ON p.id_nasabah = n.id_nasabah " +
+                           "WHERE sp.status = ?";
+            
+            try (PreparedStatement stmt = conn.prepareStatement(query)) {
+                stmt.setString(1, status.getLabel());
+                ResultSet rs = stmt.executeQuery();
+                while (rs.next()) {
+                    PinjamanModel pinjaman = new PinjamanModel();
+                    pinjaman.setId(rs.getInt("id_pinjaman"));
+                    pinjaman.setNamaNasabah(rs.getString("nama_lengkap"));
+                    pinjaman.setNominalPinjaman(rs.getInt("nominal_pinjaman"));
+                    pinjaman.setKeterangan(rs.getString("alasan_pengajuan"));
+                    pinjaman.setTenor(rs.getInt("tenor"));
+                    pinjaman.setTanggalPengajuan(rs.getDate("tgl_pengajuan"));
+                    pinjaman.setStatus(StatusPinjamanEnum.fromString(rs.getString("status")));
+                    
+                    list.add(pinjaman);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+         
+        return list;
+    }
+    
+    public static boolean updateStatus(int id, StatusPinjamanEnum status) {
+        try (Connection conn = DatabaseConnection.connect()) {
+            String query = "UPDATE status_pinjaman SET status = ? WHERE id_pinjaman = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(query)) {
+                stmt.setString(1, status.name());
+                stmt.setInt(2, id);
+
+                int affected = stmt.executeUpdate();
+                return affected > 0;
+            }
+        } catch(SQLException e) {
+            System.out.println(e);
+        }
+
+        return false;
+    }
+     
+    public static int getNominalById(int idPinjaman) {
+        try (Connection conn = DatabaseConnection.connect()) {
+            String query = "SELECT nominal_pinjaman FROM pinjaman WHERE id_pinjaman = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(query)) {
+                stmt.setInt(1, idPinjaman);
+                ResultSet rs = stmt.executeQuery();
+                if (rs.next()) {
+                    return rs.getInt("nominal_pinjaman");
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println(e);
+        }
+        
+        return 0;
+    }
+
+    public static int getTenorById(int idPinjaman) {
+          try (Connection conn = DatabaseConnection.connect()) {
+            String query = "SELECT tenor FROM pinjaman WHERE id_pinjaman = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(query)) {
+                stmt.setInt(1, idPinjaman);
+                ResultSet rs = stmt.executeQuery();
+                if (rs.next()) {
+                    return rs.getInt("tenor");
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println(e);
+        }
+          
+        return -1;
+    }
+}

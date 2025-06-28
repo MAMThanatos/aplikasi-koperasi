@@ -3,8 +3,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package controllers;
+import enums.StatusNasabahEnum;
 import models.JabatanModel;
 import models.NasabahModel;
+import repository.NasabahDAO;
+import repository.JabatanDAO;
 import java.util.List;
 import utils.HashUtils;
 
@@ -14,12 +17,12 @@ import utils.HashUtils;
  */
 public class PembuatanAkunController {
     private static boolean isUsernameExists(String username) {
-        String rs = NasabahModel.getUsername(username);
+        String rs = NasabahDAO.getUsername(username);
         
         return !"".equals(rs);
     }
     
-    public static String createAccount(String namaLengkap, String username, String password, int idJabatan, String status) {
+    public static String createAccount(String namaLengkap, String username, String password, int idJabatan) {
         if(isUsernameExists(username)) {
             return "Username sudah digunakan";
         }
@@ -29,8 +32,14 @@ public class PembuatanAkunController {
         }
         
         String hashedPassword = HashUtils.hashPassword(password);
+        NasabahModel nasabah = new NasabahModel();
         
-        boolean rs = NasabahModel.insertNasabah(namaLengkap, username, hashedPassword, idJabatan, status);
+        nasabah.setNama(namaLengkap);
+        nasabah.setUsername(username);
+        nasabah.setHashedPassword(hashedPassword);
+        nasabah.setStatus(StatusNasabahEnum.AKTIF);
+        
+        boolean rs = NasabahDAO.insert(nasabah, idJabatan);
         
         if(!rs) {
             return "Gagal membuat akun baru!";
@@ -40,11 +49,11 @@ public class PembuatanAkunController {
     }
     
     
-    public static List<String> getAllJabatan() {
-        return JabatanModel.getAllJabatan();
+    public static List<JabatanModel> getAllJabatan() {
+        return JabatanDAO.getAll();
     }
     
     public static int getIdJabatanBynama(String nama) {
-        return JabatanModel.getIdJabatanBynama(nama);
+        return JabatanDAO.getIdJabatanBynama(nama);
     }
 }

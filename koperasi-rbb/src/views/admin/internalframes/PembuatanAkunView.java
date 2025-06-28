@@ -43,22 +43,12 @@ public class PembuatanAkunView extends javax.swing.JInternalFrame {
     
     private void loadJabatan() {
         jabatanComboBox.removeAllItems();
-        List<String> jabatanList = PembuatanAkunController.getAllJabatan();
+        List<JabatanModel> jabatanList = PembuatanAkunController.getAllJabatan();
         
-        for (String j : jabatanList) {
-            jabatanComboBox.addItem(j);
+        for (JabatanModel jabatan : jabatanList) {
+            jabatanComboBox.addItem(jabatan.getNama());
         }
-//        try (Connection conn = DatabaseConnection.connect();
-//             PreparedStatement stmt = conn.prepareStatement("SELECT id_jabatan, nama_jabatan FROM jabatan");
-//             ResultSet rs = stmt.executeQuery()) {
-//
-//            while (rs.next()) {
-//                jabatanComboBox.addItem(rs.getString("nama_jabatan"));
-//            }
-//
-//        } catch (SQLException e) {
-//            JOptionPane.showMessageDialog(this, "Gagal memuat jabatan: " + e.getMessage());
-//        }
+
         jabatanComboBox.setSelectedIndex(-1);
     }
 
@@ -180,7 +170,7 @@ public class PembuatanAkunView extends javax.swing.JInternalFrame {
 
         int idJabatan = PembuatanAkunController.getIdJabatanBynama(jabatanNama);
         
-        String message = PembuatanAkunController.createAccount(namaLengkap, username, password, idJabatan, "AKTIF");
+        String message = PembuatanAkunController.createAccount(namaLengkap, username, password, idJabatan);
 
         JOptionPane.showMessageDialog(this, message);
         

@@ -10,35 +10,41 @@ import java.util.List;
 import models.PinjamanModel;
 import models.AngsuranModel;
 import models.SimpananModel;
+import repository.AngsuranDAO;
+import repository.PinjamanDAO;
 
 /**
  *
  * @author wtf
  */
 public class PinjamanController {
-    public static List<String[]> getAllPinjaman() {
-        return PinjamanModel.getAllPinjaman();   
+    public static List<PinjamanModel> getAllPinjaman() {
+        return PinjamanDAO.getAll();
+    }
+    
+    public static List<PinjamanModel> getAllAcceptedPinjaman() {
+        return PinjamanDAO.getByStatus(StatusPinjamanEnum.DISETUJUI);
     }
     
     public static boolean tolakPinjaman(int idPinjaman) {
-        AngsuranModel.deleteAllByPinjamanId(idPinjaman);
-        return PinjamanModel.setStatus(idPinjaman, StatusPinjamanEnum.DITOLAK);
+        AngsuranDAO.deleteByPinjamanId(idPinjaman);
+        return PinjamanDAO.updateStatus(idPinjaman, StatusPinjamanEnum.DITOLAK);
     }
     
     public static boolean setujuiPinjaman(int idPinjaman) {
         int totalSimpanan = SimpananModel.getTotalSimpanan();
-        int nominal = PinjamanModel.getNominalById(idPinjaman);
+        int nominal = PinjamanDAO.getNominalById(idPinjaman);
         
         if(nominal > totalSimpanan) return false;
 
-        int tenor = PinjamanModel.getTenorById(idPinjaman);
+        int tenor = PinjamanDAO.getTenorById(idPinjaman);
         boolean angsuranStatus = buatAngsuran(idPinjaman, nominal, tenor);
         
         if(!angsuranStatus) {
-            PinjamanModel.setStatus(idPinjaman, StatusPinjamanEnum.MENUNGGU);
+            PinjamanDAO.updateStatus(idPinjaman, StatusPinjamanEnum.MENUNGGU);
         }
         
-        return PinjamanModel.setStatus(idPinjaman, StatusPinjamanEnum.DISETUJUI);
+        return PinjamanDAO.updateStatus(idPinjaman, StatusPinjamanEnum.DISETUJUI);
     }
     
     private static boolean buatAngsuran(int idPinjaman, int nominal, int tenor) {
@@ -47,12 +53,21 @@ public class PinjamanController {
         boolean hasCreatedAny = false;
 
         for (int bulan = 1; bulan <= tenor; bulan++) {
-            boolean success = AngsuranModel.insertAngsuran(idPinjaman, bulan, cicilan, StatusAngsuranEnum.BELUM_LUNAS);
+            AngsuranModel angsuran = new AngsuranModel();
+            
+            angsuran.setIdPinjaman(idPinjaman);
+            angsuran.setAngsuranKe(bulan);
+            angsuran.setNominalAngsuran(cicilan);
+            angsuran.setStatus(StatusAngsuranEnum.BELUM_LUNAS);
+            
+            boolean success = AngsuranDAO.insert(angsuran);
+            
+//            boolean success = AngsuranModel.insertAngsuran(idPinjaman, bulan, cicilan, StatusAngsuranEnum.BELUM_LUNAS);
             if (!success) {
                 System.err.println("Gagal membuat angsuran bulan ke-" + bulan + " untuk ID Pinjaman: " + idPinjaman);
 
                 if (hasCreatedAny) {
-                    AngsuranModel.deleteAllByPinjamanId(idPinjaman);
+                    AngsuranDAO.deleteByPinjamanId(idPinjaman);
                     System.out.println("Angsuran yang sudah terbuat dihapus karena error.");
                 }
 

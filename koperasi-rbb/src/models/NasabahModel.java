@@ -4,13 +4,7 @@
  */
 package models;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import utils.DatabaseConnection;
-import java.util.List;
-import java.util.ArrayList;
+import enums.StatusNasabahEnum;
 
 /**
  *
@@ -18,65 +12,80 @@ import java.util.ArrayList;
  */
 
 public class NasabahModel {
-    public static String[][] getAllNasabah() {
-        List<String[]> nasabahList = new ArrayList<>();
+    private int id;
+    private String nama;
+    private String username;
+    private String hashedPassword;
+    private int idJabatan;
+    private String jabatan;
+    private String status;
 
-        try (Connection conn = DatabaseConnection.connect()) {
-            String query = "SELECT n.id_nasabah, j.nama_jabatan, n.nama_lengkap AS nama, n.username, n.status " +
-                           "FROM nasabah n JOIN jabatan j ON n.id_jabatan = j.id_jabatan";
-            try (PreparedStatement stmt = conn.prepareStatement(query)) {
-                ResultSet rs = stmt.executeQuery();
-                while (rs.next()) {
-                    String[] row = new String[5];
-                    row[0] = rs.getString("id_nasabah");
-                    row[1] = rs.getString("nama_jabatan");
-                    row[2] = rs.getString("nama");
-                    row[3] = rs.getString("username");
-                    row[4] = rs.getString("status");
-                    nasabahList.add(row);
-                }
-            }
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
+    public NasabahModel() {
+    }
 
-        return nasabahList.toArray(String[][]::new);
+    public NasabahModel(int id, String nama, String username, String hashedPassword, int idJabatan, String jabatan, String status) {
+        this.id = id;
+        this.nama = nama;
+        this.username = username;
+        this.hashedPassword = hashedPassword;
+        this.idJabatan = idJabatan;
+        this.jabatan = jabatan;
+        this.status = status;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getNama() {
+        return nama;
+    }
+
+    public void setNama(String nama) {
+        this.nama = nama;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getHashedPassword() {
+        return hashedPassword;
+    }
+
+    public void setHashedPassword(String hashedPassword) {
+        this.hashedPassword = hashedPassword;
+    }
+
+    public int getIdJabatan() {
+        return idJabatan;
+    }
+
+    public void setIdJabatan(int idJabatan) {
+        this.idJabatan = idJabatan;
     }
     
-    public static String getUsername(String username) {
-        try (Connection conn = DatabaseConnection.connect()) {
-            String query = "SELECT username FROM nasabah WHERE username = ?";
-            try (PreparedStatement stmt = conn.prepareStatement(query)) {
-                stmt.setString(1, username);
-                ResultSet rs = stmt.executeQuery();
-                if (rs.next()) {
-                    return rs.getString("username"); 
-                }
-            }
-        } catch(SQLException e) {
-            System.out.println(e);
-        }
-        
-        return "";
+    public String getJabatan() {
+        return jabatan;
     }
-    
-    public static boolean insertNasabah(String namaLengkap, String username, String hashedPassword, int idJabatan, String status) {
-        try (Connection conn = DatabaseConnection.connect()) {
-            String query = "INSERT INTO nasabah (id_jabatan, nama_lengkap, username, hashed_password, status) VALUES(?, ?, ?, ?, ?)";
-            try (PreparedStatement stmt = conn.prepareStatement(query)) {
-                stmt.setInt(1, idJabatan);
-                stmt.setString(2, namaLengkap);
-                stmt.setString(3, username);
-                stmt.setString(4, hashedPassword);
-                stmt.setString(5, status);
-                stmt.executeUpdate();
-                
-                return true;
-            }
-        } catch(SQLException e) {
-            System.out.println(e);
-        }
-        
-        return false;
+
+    public void setJabatan(String jabatan) {
+        this.jabatan = jabatan;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusNasabahEnum status) {
+        this.status = status.getLabel();
     }
 }

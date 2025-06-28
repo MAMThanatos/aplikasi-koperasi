@@ -8,6 +8,8 @@ package views.admin.internalframes;
 
 import javax.swing.table.DefaultTableModel;
 import controllers.DataNasabahController;
+import java.util.List;
+import models.NasabahModel;
 
 /**
  *
@@ -43,10 +45,18 @@ public class DataNasabahView extends javax.swing.JInternalFrame {
     model.addColumn("Username");
     model.addColumn("Status");
     
-    String[][] dataNasabah = DataNasabahController.getAllNasabah();
+    List<NasabahModel> nasabahList = DataNasabahController.getAllNasabah();
     
-    for (Object[] row : dataNasabah) {
-        model.addRow(row);
+    for (NasabahModel nasabah : nasabahList) {
+        Object[] rowData = new Object[5];
+        
+        rowData[0] = nasabah.getId();
+        rowData[1] = nasabah.getJabatan();
+        rowData[2] = nasabah.getNama();
+        rowData[3] = nasabah.getUsername();
+        rowData[4] = nasabah.getStatus();
+        
+        model.addRow(rowData);
     }
     
     jTable1.setModel(model);
