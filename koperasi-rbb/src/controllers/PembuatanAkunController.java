@@ -47,14 +47,4 @@ public class PembuatanAkunController {
         
         return "Sukses membuat akun baru!";
     }
-    
-    
-    public static List<JabatanModel> getAllJabatan() {
-        
-        return JabatanDAO.getAll();
-    }
-    
-    public static int getIdJabatanBynama(String nama) {
-        return JabatanDAO.getIdJabatanBynama(nama);
-    }
 }

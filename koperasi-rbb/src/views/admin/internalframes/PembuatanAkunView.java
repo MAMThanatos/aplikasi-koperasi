@@ -6,14 +6,10 @@
 
 package views.admin.internalframes;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import models.JabatanModel;
 import controllers.PembuatanAkunController;
+import controllers.JabatanController;
 import java.util.List;
 
 
@@ -43,7 +39,7 @@ public class PembuatanAkunView extends javax.swing.JInternalFrame {
     
     private void loadJabatan() {
         jabatanComboBox.removeAllItems();
-        List<JabatanModel> jabatanList = PembuatanAkunController.getAllJabatan();
+        List<JabatanModel> jabatanList = JabatanController.getAllJabatan();
         
         for (JabatanModel jabatan : jabatanList) {
             jabatanComboBox.addItem(jabatan.getNama());
@@ -168,7 +164,7 @@ public class PembuatanAkunView extends javax.swing.JInternalFrame {
             return;
         }
 
-        int idJabatan = PembuatanAkunController.getIdJabatanBynama(jabatanNama);
+        int idJabatan = JabatanController.getIdJabatanBynama(jabatanNama);
         
         String message = PembuatanAkunController.createAccount(namaLengkap, username, password, idJabatan);
 

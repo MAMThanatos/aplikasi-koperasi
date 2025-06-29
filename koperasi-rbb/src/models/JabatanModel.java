@@ -35,4 +35,9 @@ public class JabatanModel {
     public void setNama(String nama) {
         this.nama = nama;
     }
+
+    @Override
+    public String toString() {
+        return this.nama; // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+    }
 }

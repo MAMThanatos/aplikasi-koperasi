@@ -15,6 +15,7 @@ public class NasabahModel {
     private int id;
     private String nama;
     private String username;
+    private String password;
     private String hashedPassword;
     private int idJabatan;
     private String jabatan;
@@ -23,10 +24,11 @@ public class NasabahModel {
     public NasabahModel() {
     }
 
-    public NasabahModel(int id, String nama, String username, String hashedPassword, int idJabatan, String jabatan, String status) {
+    public NasabahModel(int id, String nama, String username, String password, String hashedPassword, int idJabatan, String jabatan, String status) {
         this.id = id;
         this.nama = nama;
         this.username = username;
+        this.password = password;
         this.hashedPassword = hashedPassword;
         this.idJabatan = idJabatan;
         this.jabatan = jabatan;
@@ -55,6 +57,14 @@ public class NasabahModel {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getHashedPassword() {

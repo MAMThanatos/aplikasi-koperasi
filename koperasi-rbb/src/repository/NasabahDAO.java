@@ -99,4 +99,37 @@ public class NasabahDAO {
 
         return false;
     }
+    
+    public static boolean update(NasabahModel nasabah) {
+        try (Connection conn = DatabaseConnection.connect()) {
+        boolean updatePassword = nasabah.getHashedPassword() != null && !nasabah.getHashedPassword().isEmpty();
+
+        String query;
+        if (updatePassword) {
+            query = "UPDATE nasabah SET nama_lengkap = ?, username = ?, status = ?, id_jabatan = ?, hashed_password = ? WHERE id_nasabah = ?";
+        } else {
+            query = "UPDATE nasabah SET nama_lengkap = ?, username = ?, status = ?, id_jabatan = ? WHERE id_nasabah = ?";
+        }
+
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, nasabah.getNama());
+            stmt.setString(2, nasabah.getUsername());
+            stmt.setString(3, nasabah.getStatus());
+            stmt.setInt(4, nasabah.getIdJabatan());
+
+            if (updatePassword) {
+                stmt.setString(5, nasabah.getHashedPassword());
+                stmt.setInt(6, nasabah.getId());
+            } else {
+                stmt.setInt(5, nasabah.getId());
+            }
+
+                return stmt.executeUpdate() > 0;
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        
+        return false;
+    }
 }

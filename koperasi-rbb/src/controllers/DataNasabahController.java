@@ -7,6 +7,7 @@ package controllers;
 import java.util.List;
 import repository.NasabahDAO;
 import models.NasabahModel;
+import utils.HashUtils;
         
 /**
  *
@@ -15,5 +16,18 @@ import models.NasabahModel;
 public class DataNasabahController {
     public static List<NasabahModel> getAllNasabah() {
         return NasabahDAO.getAll();
+    }
+    
+    public static boolean updateNasabah(NasabahModel nasabah) {
+        String newPassword = nasabah.getPassword();
+        
+        nasabah.setIdJabatan(JabatanController.getIdJabatanBynama(nasabah.getJabatan()));
+        
+        if(!newPassword.isEmpty()) {
+            nasabah.setHashedPassword(HashUtils.hashPassword(newPassword));
+        }
+        
+        
+        return NasabahDAO.update(nasabah);
     }
 }

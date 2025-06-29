@@ -21,7 +21,9 @@ import models.NasabahModel;
 /**
  *
  * @author Aziz
+ * @author wtf
  */
+
 public class SimpananView extends javax.swing.JInternalFrame {
 
     /**
@@ -176,7 +178,6 @@ public class SimpananView extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void showNasabahTableDialog() {
-        // Ambil data nasabah dari controller (buat dulu controllernya kalau belum ada)
         List<NasabahModel> nasabahList = DataNasabahController.getAllNasabah();
 
         String[] columnNames = {"ID", "Nama Lengkap", "Username"};
@@ -188,12 +189,14 @@ public class SimpananView extends javax.swing.JInternalFrame {
         };
 
         for (NasabahModel nasabah : nasabahList) {
-            Object[] row = {
-                nasabah.getId(),
-                nasabah.getNama(),
-                nasabah.getUsername()
-            };
-            tableModel.addRow(row);
+            if (!nasabah.getStatus().equalsIgnoreCase("Suspend")) { 
+                Object[] row = {
+                    nasabah.getId(),
+                    nasabah.getNama(),
+                    nasabah.getUsername()
+                };
+                tableModel.addRow(row);
+            }
         }
 
         JTable table = new JTable(tableModel);
