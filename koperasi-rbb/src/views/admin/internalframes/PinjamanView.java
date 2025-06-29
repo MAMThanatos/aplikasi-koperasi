@@ -203,7 +203,7 @@ public class PinjamanView extends javax.swing.JInternalFrame {
                             angsuran.getId(),
                             angsuran.getAngsuranke(),
                             angsuran.getNominalAngsuran(),
-                            angsuran.getTanggalAngsuran() != null ? angsuran.getTanggalAngsuran().toString() : "-",
+                            angsuran.getTanggalPembayaran()!= null ? angsuran.getTanggalPembayaran().toString() : "-",
                             angsuran.getStatus()
                         });
                     }

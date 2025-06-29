@@ -14,12 +14,17 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 import models.AngsuranModel;
+import models.MetodePembayaranModel;
+import controllers.PembayaranController;
+import java.util.Date;
 
 /**
  *
  * @author wtf
  */
 public class PembayaranView extends javax.swing.JInternalFrame {
+    private List<MetodePembayaranModel> listMetode;
+    private int idPinjaman;
     
     /**
      * Creates new form PembayaranView
@@ -34,6 +39,31 @@ public class PembayaranView extends javax.swing.JInternalFrame {
                 showPinjamanTableInDialog();
             }
         });
+        
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int selectedRow = jTable1.getSelectedRow();
+                if (selectedRow >= 0) {
+                    Object angsuranKeObj = jTable1.getValueAt(selectedRow, 1);
+                    Object nominalObj = jTable1.getValueAt(selectedRow, 2);
+
+                    if (angsuranKeObj != null) {
+                        jTextField3.setText(angsuranKeObj.toString());
+                    } else {
+                        jTextField3.setText("");
+                    }
+
+                    if (nominalObj != null) {
+                        jTextField4.setText(nominalObj.toString());
+                    } else {
+                        jTextField4.setText("");
+                    }
+                }
+            }
+        });
+        
+        loadMetodePembayaran();
     }
 
     /**
@@ -43,7 +73,19 @@ public class PembayaranView extends javax.swing.JInternalFrame {
      */
     @SuppressWarnings("unchecked")
     
-    private void loadAngsuran(int idPinjaman) {
+    private void loadMetodePembayaran() {
+        jComboBox1.removeAllItems();
+        listMetode = PembayaranController.getAllMetodePembayaran();
+
+        for (MetodePembayaranModel metode : listMetode) {
+            jComboBox1.addItem(metode.getNama());
+        }
+
+        jComboBox1.setSelectedIndex(-1);
+      
+    }
+    
+    private void loadAngsuran() {
         List<AngsuranModel> angsuranList = AngsuranController.getAllAngsuranByIdPinjaman(idPinjaman);
         
         String[] columnNames = {"ID", "Ke", "Nominal", "Tanggal Bayar", "Metode Pembayaran", "Status"};
@@ -54,26 +96,23 @@ public class PembayaranView extends javax.swing.JInternalFrame {
                 return false;
             }
         };
-        
-        System.out.println(angsuranList);
-        
+           
         for(AngsuranModel angsuran : angsuranList) {
             Object[] rowData = new Object[8];
         
             rowData[0] = angsuran.getId();
             rowData[1] = angsuran.getAngsuranke();
             rowData[2] = angsuran.getNominalAngsuran();
-            rowData[3] = angsuran.getTanggalAngsuran();
+            rowData[3] = angsuran.getTanggalPembayaran();
             rowData[4] = angsuran.getMetodePembayaran();
             rowData[5] = angsuran.getStatus();
-            
-            System.out.println("tete");
-            System.out.println(rowData[5]);
-                
+                   
             tableModel.addRow(rowData);
         }
         
         jTable1.setModel(tableModel);
+        
+        jTable1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     }
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -121,15 +160,18 @@ public class PembayaranView extends javax.swing.JInternalFrame {
         jLabel1.setText("ID Pinjaman");
 
         jTextField2.setEditable(false);
-        jTextField2.setEnabled(false);
+        jTextField2.setBackground(new java.awt.Color(153, 153, 153));
+        jTextField2.setFocusable(false);
 
-        jLabel7.setText("Nomimal");
+        jLabel7.setText("Nominal");
 
         jTextField5.setEditable(false);
-        jTextField5.setEnabled(false);
+        jTextField5.setBackground(new java.awt.Color(153, 153, 153));
+        jTextField5.setFocusable(false);
 
         jTextField6.setEditable(false);
-        jTextField6.setEnabled(false);
+        jTextField6.setBackground(new java.awt.Color(153, 153, 153));
+        jTextField6.setFocusable(false);
 
         jLabel8.setText("Tenor");
 
@@ -140,13 +182,13 @@ public class PembayaranView extends javax.swing.JInternalFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(18, 18, 18)
                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(18, 18, Short.MAX_VALUE)
                         .addComponent(jLabel8)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel2)
@@ -187,12 +229,14 @@ public class PembayaranView extends javax.swing.JInternalFrame {
         jLabel5.setText("Metode Pembayaran");
 
         jTextField3.setEditable(false);
-        jTextField3.setEnabled(false);
+        jTextField3.setBackground(new java.awt.Color(153, 153, 153));
+        jTextField3.setFocusable(false);
 
         jLabel6.setText("Tanggal Pembayaran");
 
         jTextField4.setEditable(false);
-        jTextField4.setEnabled(false);
+        jTextField4.setBackground(new java.awt.Color(153, 153, 153));
+        jTextField4.setFocusable(false);
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
@@ -251,15 +295,23 @@ public class PembayaranView extends javax.swing.JInternalFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "ID", "Ke", "Nominal", "Tanggal Bayar", "Metode Pembayaran", "Status"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -267,8 +319,8 @@ public class PembayaranView extends javax.swing.JInternalFrame {
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -279,9 +331,14 @@ public class PembayaranView extends javax.swing.JInternalFrame {
                 .addContainerGap())
         );
 
-        jButton1.setText("Simpan");
+        jButton1.setText("Bayar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
-        jButton2.setText("jButton2");
+        jButton2.setText("Batal");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -298,7 +355,7 @@ public class PembayaranView extends javax.swing.JInternalFrame {
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -367,8 +424,8 @@ public class PembayaranView extends javax.swing.JInternalFrame {
                 jTextField5.setText(selectedNominal);
                 jTextField6.setText(selectedTenor);
                 
-                int idPinjaman = Integer.parseInt(selectedId);
-                loadAngsuran(idPinjaman);
+                idPinjaman = Integer.parseInt(selectedId);
+                loadAngsuran();
             }
         }
     }
@@ -376,6 +433,38 @@ public class PembayaranView extends javax.swing.JInternalFrame {
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        int selectedRow = jTable1.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Silakan pilih angsuran terlebih dahulu.");
+            return;
+        }
+
+        String idAngsuranStr = jTable1.getValueAt(selectedRow, 0).toString();
+        Date tanggalPembayaran = jDateChooser1.getDate();
+        
+        int selectedMetodeIndex = jComboBox1.getSelectedIndex();
+
+        if (selectedMetodeIndex == -1 || tanggalPembayaran == null) {
+            JOptionPane.showMessageDialog(this, "Semua field wajib diisi!");
+            return;
+        }
+        
+        int idAngsuran = Integer.parseInt(idAngsuranStr);
+        int idMetode = listMetode.get(selectedMetodeIndex).getId();
+        
+        boolean success = AngsuranController.updateAngsuranStatusLunas(idAngsuran, idMetode, tanggalPembayaran);
+        
+        if(!success) {
+            JOptionPane.showMessageDialog(this, "Gagal melakukan pembayaran!");
+            return;
+        }
+        
+        JOptionPane.showMessageDialog(this, "Berhasil melakukan pembayaran!");
+        loadAngsuran();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

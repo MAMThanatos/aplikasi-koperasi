@@ -17,7 +17,7 @@ public class AngsuranModel {
     private int idMetodePembayaran;
     private int angsuranKe;
     private int nominalAngsuran;
-    private Date tanggalAngsuran;
+    private Date tanggalPembayaran;
     private String status;
     
     public AngsuranModel() {
@@ -30,7 +30,7 @@ public class AngsuranModel {
         this.idMetodePembayaran = idMetodePembayaran;
         this.angsuranKe = angsuranKe;
         this.nominalAngsuran = nominalAngsuran;
-        this.tanggalAngsuran = tanggalAngsuran;
+        this.tanggalPembayaran = tanggalAngsuran;
         this.status = status;
     }
 
@@ -58,8 +58,6 @@ public class AngsuranModel {
         this.MetodePembayaran = MetodePembayaran;
     }
     
-    
-
     public int getIdMetodePembayaran() {
         return idMetodePembayaran;
     }
@@ -84,12 +82,12 @@ public class AngsuranModel {
         this.nominalAngsuran = nominalAngsuran;
     }
 
-    public Date getTanggalAngsuran() {
-        return tanggalAngsuran;
+    public Date getTanggalPembayaran() {
+        return tanggalPembayaran;
     }
 
-    public void setTanggalAngsuran(Date tanggalAngsuran) {
-        this.tanggalAngsuran = tanggalAngsuran;
+    public void setTanggalPembayaran(Date tanggalPembayaran) {
+        this.tanggalPembayaran = tanggalPembayaran;
     }
 
     public String getStatus() {

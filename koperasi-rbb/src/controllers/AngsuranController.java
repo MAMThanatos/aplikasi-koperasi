@@ -4,6 +4,8 @@
  */
 package controllers;
 
+import enums.StatusAngsuranEnum;
+import java.util.Date;
 import java.util.List;
 
 import models.AngsuranModel;
@@ -15,5 +17,16 @@ import repository.AngsuranDAO;
 public class AngsuranController {
     public static List<AngsuranModel> getAllAngsuranByIdPinjaman(int idPinjaman) {
         return AngsuranDAO.getByPinjamanId(idPinjaman);
+    }
+    
+    public static boolean updateAngsuranStatusLunas(int id, int idMetodePembayaran, Date tanggalPembayaran) {
+        AngsuranModel angsuran = new AngsuranModel();
+        
+        angsuran.setId(id);
+        angsuran.setIdMetodePembayaran(idMetodePembayaran);
+        angsuran.setTanggalPembayaran(tanggalPembayaran);
+        angsuran.setStatus(StatusAngsuranEnum.LUNAS);
+        
+        return  AngsuranDAO.updateStatusLunas(angsuran);
     }
 }

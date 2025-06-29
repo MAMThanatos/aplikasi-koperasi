@@ -50,6 +50,7 @@ public class PembuatanAkunController {
     
     
     public static List<JabatanModel> getAllJabatan() {
+        
         return JabatanDAO.getAll();
     }
     

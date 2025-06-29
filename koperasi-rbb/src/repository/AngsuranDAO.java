@@ -57,7 +57,7 @@ public class AngsuranDAO {
                 a.setIdPinjaman(rs.getInt("id_pinjaman"));
                 a.setAngsuranKe(rs.getInt("angsuran_ke"));
                 a.setNominalAngsuran(rs.getInt("nominal_angsuran"));
-                a.setTanggalAngsuran(rs.getDate("tgl_pembayaran"));
+                a.setTanggalPembayaran(rs.getDate("tgl_pembayaran"));
                 a.setMetodePembayaran(rs.getString("nama_metode_pembayaran"));
                 a.setStatus(StatusAngsuranEnum.fromString(rs.getString("status")));
                 list.add(a);
@@ -68,6 +68,25 @@ public class AngsuranDAO {
         }
 
         return list;
+    }
+    
+    public static boolean updateStatusLunas(AngsuranModel angsuran) {
+         try (Connection conn = DatabaseConnection.connect()) {
+            String query = "UPDATE angsuran SET status = ?, tgl_pembayaran = ?, id_metode_pembayaran = ? WHERE id_angsuran = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(query)) {
+                stmt.setString(1, angsuran.getStatus());
+                stmt.setDate(2, new java.sql.Date(angsuran.getTanggalPembayaran().getTime()));
+                stmt.setInt(3, angsuran.getIdMetodePembayaran());
+                stmt.setInt(4, angsuran.getId());
+
+                int affected = stmt.executeUpdate();
+                return affected > 0;
+            }
+        } catch(SQLException e) {
+            System.out.println(e);
+        }
+
+        return false;
     }
 
     public static boolean deleteByPinjamanId(int idPinjaman) {
