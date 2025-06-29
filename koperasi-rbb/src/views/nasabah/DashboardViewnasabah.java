@@ -14,12 +14,12 @@ import views.LoginView;
  *
  * @author Aziz
  */
-public class DashboardView extends javax.swing.JFrame {
+public class DashboardViewnasabah extends javax.swing.JFrame {
 
     /**
      * Creates new form dashboard_admin
      */
-    public DashboardView() {
+    public DashboardViewnasabah() {
         initComponents();
         setLocationRelativeTo(null);
     }
@@ -63,7 +63,7 @@ public class DashboardView extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("ADMIN");
+        jLabel2.setText("NASABAH");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -190,7 +190,7 @@ public class DashboardView extends javax.swing.JFrame {
         jDesktopPane1.removeAll();
         jDesktopPane1.repaint();
 
-        DataNasabahView dataFrame = new DataNasabahView();
+        DataNasabahView1 dataFrame = new DataNasabahView1();
         dataFrame.setSize(jDesktopPane1.getSize());
         dataFrame.setLocation(0, 0);                    
         dataFrame.setVisible(true);
@@ -204,7 +204,7 @@ public class DashboardView extends javax.swing.JFrame {
         jDesktopPane1.removeAll();
         jDesktopPane1.repaint();
 
-        SimpananView simpanFrame = new SimpananView();
+        SimpananView1 simpanFrame = new SimpananView1();
         simpanFrame.setSize(jDesktopPane1.getSize());
         simpanFrame.setLocation(0, 0);                    
         simpanFrame.setVisible(true);
@@ -218,7 +218,7 @@ public class DashboardView extends javax.swing.JFrame {
         jDesktopPane1.removeAll();
         jDesktopPane1.repaint();
         
-        PinjamanView pinjamanFrame = new PinjamanView();
+        PinjamanView1 pinjamanFrame = new PinjamanView1();
         pinjamanFrame.setSize(jDesktopPane1.getSize());
         pinjamanFrame.setLocation(0, 0);
         pinjamanFrame.setVisible(true);
@@ -272,14 +272,18 @@ public class DashboardView extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DashboardView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DashboardViewnasabah.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DashboardView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DashboardViewnasabah.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DashboardView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DashboardViewnasabah.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DashboardView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DashboardViewnasabah.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -288,7 +292,7 @@ public class DashboardView extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new DashboardView().setVisible(true);
+                new DashboardViewnasabah().setVisible(true);
             }
         });
     }

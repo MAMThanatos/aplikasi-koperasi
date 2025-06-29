@@ -8,12 +8,12 @@ package views.nasabah.internalframes;
  *
  * @author Aziz
  */
-public class PinjamanView extends javax.swing.JInternalFrame {
+public class PinjamanView1 extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form PinjamanView
      */
-    public PinjamanView() {
+    public PinjamanView1() {
         initComponents();
     }
 
