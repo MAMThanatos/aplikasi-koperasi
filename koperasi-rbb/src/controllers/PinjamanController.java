@@ -26,6 +26,10 @@ public class PinjamanController {
         return PinjamanDAO.getByStatus(StatusPinjamanEnum.DISETUJUI);
     }
     
+    public static boolean UpdatePinjamanLunas(int idPinjaman) {
+        return PinjamanDAO.updateStatus(idPinjaman, StatusPinjamanEnum.LUNAS);
+    }
+    
     public static boolean tolakPinjaman(int idPinjaman) {
         AngsuranDAO.deleteByPinjamanId(idPinjaman);
         return PinjamanDAO.updateStatus(idPinjaman, StatusPinjamanEnum.DITOLAK);

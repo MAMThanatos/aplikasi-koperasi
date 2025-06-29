@@ -32,7 +32,7 @@ public class PembayaranView extends javax.swing.JInternalFrame {
     public PembayaranView() {
         initComponents();
         
-        jTextField1.setEditable(false); // Biar ga diketik manual (optional)
+        jTextField1.setEditable(false); 
         jTextField1.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -47,6 +47,7 @@ public class PembayaranView extends javax.swing.JInternalFrame {
                 if (selectedRow >= 0) {
                     Object angsuranKeObj = jTable1.getValueAt(selectedRow, 1);
                     Object nominalObj = jTable1.getValueAt(selectedRow, 2);
+                    Object statusObj = jTable1.getValueAt(selectedRow, 5);
 
                     if (angsuranKeObj != null) {
                         jTextField3.setText(angsuranKeObj.toString());
@@ -58,6 +59,12 @@ public class PembayaranView extends javax.swing.JInternalFrame {
                         jTextField4.setText(nominalObj.toString());
                     } else {
                         jTextField4.setText("");
+                    }
+                    
+                    if (statusObj != null && statusObj.toString().equalsIgnoreCase("LUNAS")) {
+                        jButton1.setEnabled(false); 
+                    } else {
+                        jButton1.setEnabled(true);
                     }
                 }
             }
@@ -455,7 +462,7 @@ public class PembayaranView extends javax.swing.JInternalFrame {
         int idAngsuran = Integer.parseInt(idAngsuranStr);
         int idMetode = listMetode.get(selectedMetodeIndex).getId();
         
-        boolean success = AngsuranController.updateAngsuranStatusLunas(idAngsuran, idMetode, tanggalPembayaran);
+        boolean success = AngsuranController.updateAngsuranStatusLunas(idPinjaman,idAngsuran, idMetode, tanggalPembayaran);
         
         if(!success) {
             JOptionPane.showMessageDialog(this, "Gagal melakukan pembayaran!");

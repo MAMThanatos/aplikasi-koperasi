@@ -19,14 +19,24 @@ public class AngsuranController {
         return AngsuranDAO.getByPinjamanId(idPinjaman);
     }
     
-    public static boolean updateAngsuranStatusLunas(int id, int idMetodePembayaran, Date tanggalPembayaran) {
+    public static boolean updateAngsuranStatusLunas(int idPinjaman, int id, int idMetodePembayaran, Date tanggalPembayaran) {
         AngsuranModel angsuran = new AngsuranModel();
-        
+    
         angsuran.setId(id);
         angsuran.setIdMetodePembayaran(idMetodePembayaran);
         angsuran.setTanggalPembayaran(tanggalPembayaran);
         angsuran.setStatus(StatusAngsuranEnum.LUNAS);
         
-        return  AngsuranDAO.updateStatusLunas(angsuran);
+        boolean updated = AngsuranDAO.updateStatusLunas(angsuran);
+        
+        if(updated) {
+            boolean semuaLunas = AngsuranDAO.semuaAngsuranLunas(idPinjaman);
+            
+            if(semuaLunas) {
+                PinjamanController.UpdatePinjamanLunas(idPinjaman);
+            }
+        }
+        
+        return updated;
     }
 }

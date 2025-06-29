@@ -47,7 +47,7 @@ public class PanelAction extends javax.swing.JPanel {
     }
 
     public void setStatus(String status) {
-        if ("Ditolak".equalsIgnoreCase(status)) {
+        if ("Ditolak".equalsIgnoreCase(status) || "Lunas".equalsIgnoreCase(status)) {
             acceptBtn.setVisible(false);
             refuseBtn.setVisible(false);
         } else if("Disetujui".equalsIgnoreCase(status)) {

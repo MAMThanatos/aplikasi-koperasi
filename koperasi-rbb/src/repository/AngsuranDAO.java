@@ -20,7 +20,7 @@ import java.util.List;
  */
 public class AngsuranDAO {
     public static boolean insert(AngsuranModel angsuran) {
-        String query = "INSERT INTO angsuran (id_pinjaman, bulan_ke, nominal_angsuran, status) " +
+        String query = "INSERT INTO angsuran (id_pinjaman, angsuran_ke, nominal_angsuran, status) " +
                        "VALUES (?, ?, ?, ?)";
 
         try (Connection conn = DatabaseConnection.connect();
@@ -68,6 +68,21 @@ public class AngsuranDAO {
         }
 
         return list;
+    }
+    
+    public static boolean semuaAngsuranLunas(int idPinjaman) {
+        String query = "SELECT COUNT(*) FROM angsuran WHERE id_pinjaman = ? AND status != 'LUNAS'";
+        try (Connection conn = DatabaseConnection.connect();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, idPinjaman);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) == 0;
+            }
+        } catch (SQLException e) {
+            System.err.println("Gagal cek semua angsuran lunas: " + e.getMessage());
+        }
+        return false;
     }
     
     public static boolean updateStatusLunas(AngsuranModel angsuran) {
