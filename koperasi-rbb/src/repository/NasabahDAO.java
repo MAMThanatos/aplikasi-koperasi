@@ -63,6 +63,23 @@ public class NasabahDAO {
         return "";
     }
     
+    public static String getHashedPassword(String username) {
+        try (Connection conn = DatabaseConnection.connect()) {
+            String query = "SELECT hashed_password FROM nasabah WHERE username = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(query)) {
+                stmt.setString(1, username);
+                ResultSet rs = stmt.executeQuery();
+                if (rs.next()) {
+                    return rs.getString("hashed_password"); 
+                }
+            }
+        } catch(SQLException e) {
+            System.out.println(e);
+        }
+        
+        return "";
+    }
+    
     public static boolean insert(NasabahModel nasabah, int idJabatan) {
         try (Connection conn = DatabaseConnection.connect()) {
             String query = "INSERT INTO nasabah (id_jabatan, nama_lengkap, username, hashed_password, status) VALUES(?, ?, ?, ?, ?)";
