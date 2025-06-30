@@ -7,7 +7,9 @@ package views.nasabah.internalframes;
 /**
  *
  * @author Aziz
+ * @author wtf
  */
+
 public class PembayaranView extends javax.swing.JInternalFrame {
 
     /**
@@ -15,7 +17,10 @@ public class PembayaranView extends javax.swing.JInternalFrame {
      */
     public PembayaranView() {
         initComponents();
+        
     }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.

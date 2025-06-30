@@ -30,4 +30,8 @@ public class DataNasabahController {
         
         return NasabahDAO.update(nasabah);
     }
+    
+    public static NasabahModel getNasabahById(int id) {
+        return NasabahDAO.getById(id);
+    }
 }

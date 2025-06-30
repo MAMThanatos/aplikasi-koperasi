@@ -203,7 +203,7 @@ public class DashboardNasabahView extends javax.swing.JFrame {
         jDesktopPane1.removeAll();
         jDesktopPane1.repaint();
 
-        ProfileView dataFrame = new ProfileView();
+        ProfileView dataFrame = new ProfileView(this.idNasabah);
         dataFrame.setSize(jDesktopPane1.getSize());
         dataFrame.setLocation(0, 0);                    
         dataFrame.setVisible(true);

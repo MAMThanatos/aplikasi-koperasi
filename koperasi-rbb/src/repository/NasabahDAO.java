@@ -46,6 +46,33 @@ public class NasabahDAO {
         return list;
     }
     
+    public static NasabahModel getById(int id) {
+        try (Connection conn = DatabaseConnection.connect()) {
+            String query = "SELECT n.id_nasabah, j.nama_jabatan, n.nama_lengkap AS nama, n.username, n.status " +
+                           "FROM nasabah n JOIN jabatan j ON n.id_jabatan = j.id_jabatan " +
+                           "WHERE n.id_nasabah = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(query)) {
+                stmt.setInt(1, id);
+                ResultSet rs = stmt.executeQuery();
+                if(rs.next()) {
+                    NasabahModel nasabah = new NasabahModel();
+                    
+                    nasabah.setId(rs.getInt("id_nasabah"));
+                    nasabah.setJabatan(rs.getString("nama_jabatan"));
+                    nasabah.setNama(rs.getString("nama"));
+                    nasabah.setUsername(rs.getString("username"));
+                    nasabah.setStatus(StatusNasabahEnum.fromString(rs.getString("status")));
+                    
+                    return nasabah;
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        
+        return null;
+    }
+    
     public static int getId(String username) {
         try (Connection conn = DatabaseConnection.connect()) {
             String query = "SELECT id_nasabah FROM nasabah WHERE username = ?";

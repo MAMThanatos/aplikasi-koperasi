@@ -4,17 +4,44 @@
  */
 package views.nasabah.internalframes;
 
+import controllers.DataNasabahController;
+import javax.swing.JOptionPane;
+import models.NasabahModel;
+
 /**
  *
  * @author Aziz
+ * @wtf
  */
-public class ProfileView extends javax.swing.JInternalFrame {
 
+public class ProfileView extends javax.swing.JInternalFrame {
+    private int idNasabah;
+    
     /**
      * Creates new form DataNasabahView
      */
-    public ProfileView() {
+    public ProfileView(int idNasabah) {
+        this.idNasabah = idNasabah;
+        
         initComponents();
+        loadDataNasabah();
+    }
+    
+    private void loadDataNasabah() {
+        NasabahModel nasabah = new NasabahModel();
+        
+        nasabah = DataNasabahController.getNasabahById(this.idNasabah);
+        
+      
+        if (nasabah != null) {
+            jTextField1.setText(String.valueOf(nasabah.getId()));
+            jTextField2.setText(nasabah.getNama());
+            jTextField3.setText(nasabah.getUsername());
+            jTextField4.setText(nasabah.getJabatan());
+            jTextField5.setText(nasabah.getStatus().toString());
+        } else {
+            JOptionPane.showMessageDialog(this, "Nasabah tidak ditemukan.", "Error", JOptionPane.ERROR_MESSAGE);
+        }     
     }
 
     /**
