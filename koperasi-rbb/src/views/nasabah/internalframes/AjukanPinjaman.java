@@ -11,12 +11,12 @@ package views.nasabah.internalframes;
  *
  * @author Aziz
  */
-public class AjuanPinjaman extends javax.swing.JInternalFrame {
+public class AjukanPinjaman extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form AjuanPinjaman
      */
-    public AjuanPinjaman() {
+    public AjukanPinjaman() {
         initComponents();
     }
     
