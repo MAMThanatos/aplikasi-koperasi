@@ -13,6 +13,7 @@ public enum StatusPinjamanEnum {
     MENUNGGU("Menunggu"),
     DISETUJUI("Disetujui"),
     DITOLAK("Ditolak"),
+    DIBATALKAN("Dibatalkan"),
     LUNAS("Lunas");
     
     private final String label;

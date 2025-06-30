@@ -11,12 +11,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.table.DefaultTableModel;
-import views.customComponents.TableActionCellEditor;
-import views.customComponents.TableActionCellRender;
-import views.customComponents.TableActionEvent;
+import views.customComponents.TableActionCellEditorAdmin;
+import views.customComponents.TableActionCellRenderAdmin;
 import models.PinjamanModel;
 import models.AngsuranModel;
 import controllers.AngsuranController;
+import views.customComponents.TableActionEventAdmin;
 
 /**
  *
@@ -131,7 +131,7 @@ public class PinjamanView extends javax.swing.JInternalFrame {
     }
        
     private void renderPanelAction() {
-        TableActionEvent ev = new TableActionEvent() {
+        TableActionEventAdmin ev = new TableActionEventAdmin() {
             @Override
             public void onAccept(int row) {
                 String idStr = jTable1.getValueAt(row, 0).toString();
@@ -234,8 +234,8 @@ public class PinjamanView extends javax.swing.JInternalFrame {
             }
         };
                 
-        jTable1.getColumnModel().getColumn(7).setCellRenderer(new TableActionCellRender());
-        jTable1.getColumnModel().getColumn(7).setCellEditor(new TableActionCellEditor(ev));
+        jTable1.getColumnModel().getColumn(7).setCellRenderer(new TableActionCellRenderAdmin());
+        jTable1.getColumnModel().getColumn(7).setCellEditor(new TableActionCellEditorAdmin(ev));
         jTable1.getColumnModel().getColumn(7).setPreferredWidth(80);
     }
 

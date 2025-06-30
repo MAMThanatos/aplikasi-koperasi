@@ -13,19 +13,19 @@ import javax.swing.JTable;
  *
  * @author wtf
  */
-public class TableActionCellEditor extends DefaultCellEditor {
-    private TableActionEvent ev;
+public class TableActionCellEditorNasabah extends DefaultCellEditor {
+    private TableActionEventNasabah ev;
     
-    public TableActionCellEditor(TableActionEvent ev) {
+    public TableActionCellEditorNasabah(TableActionEventNasabah ev) {
         super(new JCheckBox());
         this.ev = ev;
     }
     
     @Override
     public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-        PanelAction action = new PanelAction();
+        PanelActionNasabah action = new PanelActionNasabah();
         
-        String status = table.getValueAt(row, 6).toString();
+        String status = table.getValueAt(row, 5).toString();
         action.setStatus(status);
         
         action.initEvent(ev, row);

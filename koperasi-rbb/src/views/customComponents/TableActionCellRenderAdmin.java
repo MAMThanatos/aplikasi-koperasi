@@ -13,16 +13,16 @@ import javax.swing.table.DefaultTableCellRenderer;
  *
  * @author wtf
  */
-public class TableActionCellRender extends DefaultTableCellRenderer {
+public class TableActionCellRenderAdmin extends DefaultTableCellRenderer {
 
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         Component com = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
         
-        PanelAction action = new PanelAction();
+        PanelActionAdmin action = new PanelActionAdmin();
         
         String status = table.getValueAt(row, 6).toString(); 
-        action.setStatus(status); // Atur visibilitas tombol
+        action.setStatus(status);
         
         if(isSelected == false && row % 2 == 0) {
             action.setBackground(Color.WHITE);

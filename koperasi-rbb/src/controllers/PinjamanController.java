@@ -22,6 +22,10 @@ public class PinjamanController {
         return PinjamanDAO.getAll();
     }
     
+    public static List<PinjamanModel> getAllPinjamanByid(int idNasabah) {
+        return PinjamanDAO.getAllById(idNasabah);
+    }
+    
     public static List<PinjamanModel> getAllAcceptedPinjaman() {
         return PinjamanDAO.getByStatus(StatusPinjamanEnum.DISETUJUI);
     }
@@ -31,11 +35,19 @@ public class PinjamanController {
     }
     
     public static boolean tolakPinjaman(int idPinjaman) {
+        String currentStatus = PinjamanDAO.getStatusById(idPinjaman);
+
+        if (!currentStatus.equalsIgnoreCase(StatusPinjamanEnum.MENUNGGU.getLabel())) return false;
+        
         AngsuranDAO.deleteByPinjamanId(idPinjaman);
         return PinjamanDAO.updateStatus(idPinjaman, StatusPinjamanEnum.DITOLAK);
     }
     
     public static boolean setujuiPinjaman(int idPinjaman) {
+        String currentStatus = PinjamanDAO.getStatusById(idPinjaman);
+
+        if (!currentStatus.equalsIgnoreCase(StatusPinjamanEnum.MENUNGGU.getLabel())) return false;
+        
         int totalSimpanan = SimpananModel.getTotalSimpanan();
         int nominal = PinjamanDAO.getNominalById(idPinjaman);
         
@@ -49,6 +61,14 @@ public class PinjamanController {
         }
         
         return PinjamanDAO.updateStatus(idPinjaman, StatusPinjamanEnum.DISETUJUI);
+    }
+    
+    public static boolean batalkanPinjaman(int idPinjaman) {
+        String currentStatus = PinjamanDAO.getStatusById(idPinjaman);
+        
+        if(!currentStatus.equalsIgnoreCase(StatusPinjamanEnum.MENUNGGU.getLabel())) return false;
+        
+        return PinjamanDAO.updateStatus(idPinjaman, StatusPinjamanEnum.DIBATALKAN);
     }
     
     private static boolean buatAngsuran(int idPinjaman, int nominal, int tenor) {
@@ -66,7 +86,6 @@ public class PinjamanController {
             
             boolean success = AngsuranDAO.insert(angsuran);
             
-//            boolean success = AngsuranModel.insertAngsuran(idPinjaman, bulan, cicilan, StatusAngsuranEnum.BELUM_LUNAS);
             if (!success) {
                 System.err.println("Gagal membuat angsuran bulan ke-" + bulan + " untuk ID Pinjaman: " + idPinjaman);
 
@@ -82,5 +101,17 @@ public class PinjamanController {
         }
 
         return true;
+    }
+
+    public static boolean ajukanPinjaman(int idNasabah, int nominal, int tenor, String alasan) {
+      PinjamanModel newPinjaman = new PinjamanModel();
+      
+      newPinjaman.setIdNasabah(idNasabah);
+      newPinjaman.setNominalPinjaman(nominal);
+      newPinjaman.setTenor(tenor);
+      newPinjaman.setKeterangan(alasan);
+      newPinjaman.setStatus(StatusPinjamanEnum.MENUNGGU);
+      
+      return PinjamanDAO.insert(newPinjaman);
     }
 }

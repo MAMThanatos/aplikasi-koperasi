@@ -8,8 +8,7 @@ package views.customComponents;
  *
  * @author wtf
  */
-public interface TableActionEvent {
-    public void onAccept(int row);
+public interface TableActionEventNasabah {
     public void onRefuse(int row);
     public void onDetail(int row);
 }

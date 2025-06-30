@@ -11,24 +11,16 @@ import java.awt.event.ActionListener;
  *
  * @author wtf
  */
-public class PanelAction extends javax.swing.JPanel {
+public class PanelActionNasabah extends javax.swing.JPanel {
 
     /**
      * Creates new form PanelAction
      */
-    public PanelAction() {
+    public PanelActionNasabah() {
         initComponents();
     }
     
-    public void initEvent(TableActionEvent ev, int row) {
-        acceptBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                ev.onAccept(row);
-            }
-        
-        });
-        
+    public void initEvent(TableActionEventNasabah ev, int row) {
         detailBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -47,13 +39,9 @@ public class PanelAction extends javax.swing.JPanel {
     }
 
     public void setStatus(String status) {
-        if ("Ditolak".equalsIgnoreCase(status) || "Lunas".equalsIgnoreCase(status)) {
-            acceptBtn.setVisible(false);
+        if ("Ditolak".equalsIgnoreCase(status) || "Lunas".equalsIgnoreCase(status) || "Disetujui".equalsIgnoreCase(status)) {
             refuseBtn.setVisible(false);
-        } else if("Disetujui".equalsIgnoreCase(status)) {
-               acceptBtn.setVisible(false);
         } else {
-            acceptBtn.setVisible(true);
             refuseBtn.setVisible(true);
         }
     }
@@ -67,11 +55,8 @@ public class PanelAction extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        acceptBtn = new views.customComponents.ActionButton();
         detailBtn = new views.customComponents.ActionButton();
         refuseBtn = new views.customComponents.ActionButton();
-
-        acceptBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/icons/checkmark.png"))); // NOI18N
 
         detailBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/icons/info.png"))); // NOI18N
 
@@ -83,8 +68,6 @@ public class PanelAction extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(acceptBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(detailBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(refuseBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -96,15 +79,13 @@ public class PanelAction extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(refuseBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(detailBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(acceptBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(detailBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private views.customComponents.ActionButton acceptBtn;
     private views.customComponents.ActionButton detailBtn;
     private views.customComponents.ActionButton refuseBtn;
     // End of variables declaration//GEN-END:variables
