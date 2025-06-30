@@ -46,6 +46,23 @@ public class NasabahDAO {
         return list;
     }
     
+    public static int getId(String username) {
+        try (Connection conn = DatabaseConnection.connect()) {
+            String query = "SELECT id_nasabah FROM nasabah WHERE username = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(query)) {
+                stmt.setString(1, username);
+                ResultSet rs = stmt.executeQuery();
+                if (rs.next()) {
+                    return rs.getInt("id_nasabah"); 
+                }
+            }
+        } catch(SQLException e) {
+            System.out.println(e);
+        }
+        
+        return -1;
+    }
+    
     public static String getUsername(String username) {
         try (Connection conn = DatabaseConnection.connect()) {
             String query = "SELECT username FROM nasabah WHERE username = ?";

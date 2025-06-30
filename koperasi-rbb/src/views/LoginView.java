@@ -126,9 +126,12 @@ public class LoginView extends javax.swing.JFrame {
             
             if(success) new DashboardAdminView().setVisible(true);
         } else if("Nasabah".equals(role)) {
-            success = LoginController.verifyNasabah(username, password);
+            int idNasabah = LoginController.verifyNasabah(username, password);
             
-            if(success) new DashboardNasabahView().setVisible(true);
+            if(idNasabah != -1) {
+                success = true;
+                new DashboardNasabahView(idNasabah).setVisible(true);
+            }
         }
         
         if(!success) {

@@ -31,21 +31,27 @@ public class LoginController {
         return hashedPassword.equals(adminHashedPassword);
     }
     
-    public static boolean verifyNasabah(String username, String password) {
+    public static int verifyNasabah(String username, String password) {
         String nasabahUsername = NasabahDAO.getUsername(username);
         
         if("".equals(nasabahUsername)) {
-            return false;
+            return -1;
         }
         
         String nasabahHashedPassword = NasabahDAO.getHashedPassword(nasabahUsername);
         
         if("".equals(nasabahHashedPassword)) {
-            return false;
+            return -1;
         }
         
         String hashedPassword = HashUtils.hashPassword(password);
         
-        return hashedPassword.equals(nasabahHashedPassword);
+        boolean passSame = hashedPassword.equals(nasabahHashedPassword);
+        
+        if(passSame) {
+            return NasabahDAO.getId(username);
+        }
+        
+        return -1;
     }
 }
