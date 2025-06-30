@@ -24,7 +24,7 @@ public class DatabaseConnection {
 
         try {
             Properties prop = new Properties();
-            InputStream input = new FileInputStream("src/config.properties");
+            InputStream input = new FileInputStream("src/resources/config.properties");
             prop.load(input);
 
             String host = prop.getProperty("db.host");
