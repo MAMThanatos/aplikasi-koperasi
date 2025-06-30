@@ -8,12 +8,12 @@ package views.nasabah.internalframes;
  *
  * @author Aziz
  */
-public class SimpananView1 extends javax.swing.JInternalFrame {
+public class SimpananView extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form SimpananView
      */
-    public SimpananView1() {
+    public SimpananView() {
         initComponents();
     }
 

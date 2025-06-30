@@ -205,7 +205,7 @@ public class DashboardNasabahView extends javax.swing.JFrame {
         jDesktopPane1.removeAll();
         jDesktopPane1.repaint();
 
-        SimpananView1 simpanFrame = new SimpananView1();
+        SimpananView simpanFrame = new SimpananView();
         simpanFrame.setSize(jDesktopPane1.getSize());
         simpanFrame.setLocation(0, 0);                    
         simpanFrame.setVisible(true);
@@ -219,7 +219,7 @@ public class DashboardNasabahView extends javax.swing.JFrame {
         jDesktopPane1.removeAll();
         jDesktopPane1.repaint();
         
-        PinjamanView1 pinjamanFrame = new PinjamanView1();
+        PinjamanView pinjamanFrame = new PinjamanView();
         pinjamanFrame.setSize(jDesktopPane1.getSize());
         pinjamanFrame.setLocation(0, 0);
         pinjamanFrame.setVisible(true);
