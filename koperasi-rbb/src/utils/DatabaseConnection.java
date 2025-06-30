@@ -6,6 +6,7 @@
 
 package utils;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -24,8 +25,15 @@ public class DatabaseConnection {
 
         try {
             Properties prop = new Properties();
-            InputStream input = new FileInputStream("src/resources/config.properties");
-            prop.load(input);
+
+            File configFile = new File("config.properties");
+            if (!configFile.exists()) {
+                throw new RuntimeException("File config.properties tidak ditemukan di direktori kerja: " + configFile.getAbsolutePath());
+            }
+
+            try (InputStream input = new FileInputStream(configFile)) {
+                prop.load(input);
+            }
 
             String host = prop.getProperty("db.host");
             String port = prop.getProperty("db.port");
