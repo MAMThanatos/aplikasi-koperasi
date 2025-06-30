@@ -72,31 +72,33 @@ public class PinjamanController {
     }
     
     private static boolean buatAngsuran(int idPinjaman, int nominal, int tenor) {
-        int cicilan = nominal / tenor;
+        int cicilan = (int) (Math.round((double) nominal / tenor / 1000) * 1000);
+        int totalAngsuran = cicilan * tenor;
+        int selisih = totalAngsuran - nominal;
 
         boolean hasCreatedAny = false;
-
+        
         for (int bulan = 1; bulan <= tenor; bulan++) {
             AngsuranModel angsuran = new AngsuranModel();
-            
             angsuran.setIdPinjaman(idPinjaman);
             angsuran.setAngsuranKe(bulan);
-            angsuran.setNominalAngsuran(cicilan);
+
+            if (bulan == tenor) {
+                angsuran.setNominalAngsuran(cicilan - selisih);
+            } else {
+                angsuran.setNominalAngsuran(cicilan);
+            }
+
             angsuran.setStatus(StatusAngsuranEnum.BELUM_LUNAS);
-            
+
             boolean success = AngsuranDAO.insert(angsuran);
             
             if (!success) {
-                System.err.println("Gagal membuat angsuran bulan ke-" + bulan + " untuk ID Pinjaman: " + idPinjaman);
-
                 if (hasCreatedAny) {
                     AngsuranDAO.deleteByPinjamanId(idPinjaman);
-                    System.out.println("Angsuran yang sudah terbuat dihapus karena error.");
                 }
-
                 return false;
             }
-
             hasCreatedAny = true;
         }
 
