@@ -4,12 +4,7 @@
  */
 package models;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import utils.DatabaseConnection;
+import java.util.Date;
 
 /**
  *
@@ -17,37 +12,50 @@ import utils.DatabaseConnection;
  */
 
 public class SimpananModel {
-    public static boolean insertSimpanan(int idNasabah, int nominalSimpanan, Date tglUangMasuk) {
-        try (Connection conn = DatabaseConnection.connect()) {
-            String query = "INSERT INTO simpanan (id_nasabah, nominal_simpanan, tgl_uang_masuk) VALUES (?, ?, ?)";
-            try (PreparedStatement stmt = conn.prepareStatement(query)) {
-                stmt.setInt(1, idNasabah);
-                stmt.setInt(2, nominalSimpanan);
-                stmt.setDate(3, tglUangMasuk);
-                
-                int affected = stmt.executeUpdate();
-                return affected > 0;
-            }
-        } catch(SQLException e) {
-            System.err.println(e);
-        }
-        
-        return false;
+    private int id;
+    private int idNasabah;
+    private int nominal;
+    private Date tanggalUangMasuk;
+
+    public SimpananModel() {
     }
-    
-    public static int getTotalSimpanan() {
-        try (Connection conn = DatabaseConnection.connect()) {
-            String query = "SELECT SUM(nominal_simpanan) AS total_simpanan FROM simpanan";
-            try (PreparedStatement stmt = conn.prepareStatement(query)) {
-                ResultSet rs = stmt.executeQuery();
-                if (rs.next()) {
-                    return rs.getInt("total_simpanan");
-                }
-            }
-        } catch (SQLException e) {
-            System.err.println(e);
-        }
-        
-        return 0;
+
+    public SimpananModel(int id, int idNasabah, int nominal, Date tanggalUangMasuk) {
+        this.id = id;
+        this.idNasabah = idNasabah;
+        this.nominal = nominal;
+        this.tanggalUangMasuk = tanggalUangMasuk;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getIdNasabah() {
+        return idNasabah;
+    }
+
+    public void setIdNasabah(int idNasabah) {
+        this.idNasabah = idNasabah;
+    }
+
+    public int getNominal() {
+        return nominal;
+    }
+
+    public void setNominal(int nominal) {
+        this.nominal = nominal;
+    }
+
+    public Date getTanggalUangMasuk() {
+        return tanggalUangMasuk;
+    }
+
+    public void setTanggalUangMasuk(Date tanggalUangMasuk) {
+        this.tanggalUangMasuk = tanggalUangMasuk;
     }
 }

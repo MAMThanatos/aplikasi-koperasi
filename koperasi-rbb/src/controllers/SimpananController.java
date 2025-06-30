@@ -6,6 +6,7 @@ package controllers;
 
 import java.sql.Date;
 import models.SimpananModel;
+import repository.SimpananDAO;
         
 /**
  *
@@ -13,6 +14,12 @@ import models.SimpananModel;
  */
 public class SimpananController {
     public static boolean insertSimpanan(int idNasabah, int nominalSimpanan, Date tglUangMasuk) {
-        return SimpananModel.insertSimpanan(idNasabah, nominalSimpanan, tglUangMasuk);
+        SimpananModel simpanan = new SimpananModel();
+        
+        simpanan.setIdNasabah(idNasabah);
+        simpanan.setNominal(nominalSimpanan);
+        simpanan.setTanggalUangMasuk(tglUangMasuk);
+        
+        return SimpananDAO.insert(simpanan);
     }
 }

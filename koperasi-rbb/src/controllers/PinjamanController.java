@@ -9,7 +9,7 @@ import enums.StatusPinjamanEnum;
 import java.util.List;
 import models.PinjamanModel;
 import models.AngsuranModel;
-import models.SimpananModel;
+import repository.SimpananDAO;
 import repository.AngsuranDAO;
 import repository.PinjamanDAO;
 
@@ -48,7 +48,7 @@ public class PinjamanController {
 
         if (!currentStatus.equalsIgnoreCase(StatusPinjamanEnum.MENUNGGU.getLabel())) return false;
         
-        int totalSimpanan = SimpananModel.getTotalSimpanan();
+        int totalSimpanan = SimpananDAO.getTotal();
         int nominal = PinjamanDAO.getNominalById(idPinjaman);
         
         if(nominal > totalSimpanan) return false;
