@@ -7,7 +7,8 @@
 package views;
 import controllers.LoginController;
 import javax.swing.JOptionPane;
-import views.admin.DashboardView;
+import views.admin.DashboardAdminView;
+import views.nasabah.DashboardNasabahView;
 /**
  *
  * @author Aziz
@@ -123,9 +124,11 @@ public class LoginView extends javax.swing.JFrame {
         if("Admin".equals(role)) {
             success = LoginController.verifyAdmin(username, password);
             
-            if(success) new DashboardView().setVisible(true);
+            if(success) new DashboardAdminView().setVisible(true);
         } else if("Nasabah".equals(role)) {
             success = LoginController.verifyNasabah(username, password);
+            
+            if(success) new DashboardNasabahView().setVisible(true);
         }
         
         if(!success) {

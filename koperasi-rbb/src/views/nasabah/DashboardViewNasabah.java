@@ -14,12 +14,12 @@ import views.LoginView;
  *
  * @author Aziz
  */
-public class DashboardViewnasabah extends javax.swing.JFrame {
+public class DashboardViewNasabah extends javax.swing.JFrame {
 
     /**
      * Creates new form dashboard_admin
      */
-    public DashboardViewnasabah() {
+    public DashboardViewNasabah() {
         initComponents();
         setLocationRelativeTo(null);
     }
@@ -87,7 +87,7 @@ public class DashboardViewnasabah extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(204, 204, 255));
 
-        jButton2.setText("Data Nasabah");
+        jButton2.setText("Profile");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -190,7 +190,7 @@ public class DashboardViewnasabah extends javax.swing.JFrame {
         jDesktopPane1.removeAll();
         jDesktopPane1.repaint();
 
-        DataNasabahView1 dataFrame = new DataNasabahView1();
+        ProfileView dataFrame = new ProfileView();
         dataFrame.setSize(jDesktopPane1.getSize());
         dataFrame.setLocation(0, 0);                    
         dataFrame.setVisible(true);
@@ -272,14 +272,22 @@ public class DashboardViewnasabah extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DashboardViewnasabah.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DashboardViewNasabah.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DashboardViewnasabah.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DashboardViewNasabah.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DashboardViewnasabah.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DashboardViewNasabah.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DashboardViewnasabah.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DashboardViewNasabah.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -292,7 +300,7 @@ public class DashboardViewnasabah extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new DashboardViewnasabah().setVisible(true);
+                new DashboardViewNasabah().setVisible(true);
             }
         });
     }
