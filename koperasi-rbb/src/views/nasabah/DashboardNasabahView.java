@@ -217,7 +217,7 @@ public class DashboardNasabahView extends javax.swing.JFrame {
         jDesktopPane1.removeAll();
         jDesktopPane1.repaint();
 
-        SimpananView simpanFrame = new SimpananView();
+        SimpananView simpanFrame = new SimpananView(this.idNasabah);
         simpanFrame.setSize(jDesktopPane1.getSize());
         simpanFrame.setLocation(0, 0);                    
         simpanFrame.setVisible(true);
@@ -245,7 +245,7 @@ public class DashboardNasabahView extends javax.swing.JFrame {
         jDesktopPane1.removeAll();
         jDesktopPane1.repaint();
         
-        PembayaranView pembayaranFrame = new PembayaranView();
+        PembayaranView pembayaranFrame = new PembayaranView(this.idNasabah);
         pembayaranFrame.setSize(jDesktopPane1.getSize());
         pembayaranFrame.setLocation(0, 0);
         pembayaranFrame.setVisible(true);

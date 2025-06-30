@@ -4,6 +4,16 @@
  */
 package views.nasabah.internalframes;
 
+import controllers.AngsuranController;
+import controllers.PinjamanController;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import models.AngsuranModel;
+import models.PinjamanModel;
+
 /**
  *
  * @author Aziz
@@ -11,13 +21,45 @@ package views.nasabah.internalframes;
  */
 
 public class PembayaranView extends javax.swing.JInternalFrame {
-
+    private int idNasabah;
+    
     /**
      * Creates new form PembayaranView
      */
-    public PembayaranView() {
+    public PembayaranView(int idNasabah) {
+        this.idNasabah = idNasabah;
         initComponents();
+        loadPinjaman();
+    }
+    
+    private void loadPinjaman() {
+        List<PinjamanModel> pinjamanList = PinjamanController.getAllPinjamanByid(idNasabah);
         
+        DefaultTableModel model = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return column == 6;
+            }         
+        };
+        
+        model.addColumn("ID");
+        model.addColumn("Nominal");
+        model.addColumn("Alasan");
+        model.addColumn("Tenor (Bulan)");
+        model.addColumn("Tanggal Pengajuan");
+        
+        for (PinjamanModel pinjaman : pinjamanList) {
+            Object[] rowData = new Object[8];
+            rowData[0] = pinjaman.getId();
+            rowData[1] = pinjaman.getNominalPinjaman();
+            rowData[2] = pinjaman.getKeterangan();
+            rowData[3] = pinjaman.getTenor();
+            rowData[4] = pinjaman.getTanggalPengajuan();
+
+            model.addRow(rowData);
+        }
+        
+        jTable1.setModel(model);
     }
     
     
@@ -34,6 +76,7 @@ public class PembayaranView extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -50,32 +93,92 @@ public class PembayaranView extends javax.swing.JInternalFrame {
 
         jLabel1.setText("Riwayat Pembayaran Anda");
 
+        jButton1.setText("Lihat");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(jLabel1)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 551, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 551, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(13, 13, 13)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE)
+                .addGap(7, 7, 7)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jButton1)
+                    .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        int selectedRow = jTable1.getSelectedRow();
+
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Pilih baris terlebih dahulu.");
+            return;
+        }
+
+        // Ambil ID pinjaman dari baris terpilih
+        int idPinjaman = Integer.parseInt(jTable1.getValueAt(selectedRow, 0).toString());
+
+        // Ambil list angsuran
+        List<AngsuranModel> angsuranList = AngsuranController.getAllAngsuranByIdPinjaman(idPinjaman);
+
+        // Buat model tabel angsuran
+        DefaultTableModel model = new DefaultTableModel(
+            new Object[]{"ID", "Angsuran ke", "Nominal", "Tanggal Pembayaran", "Metode Bayar", "Status"}, 0
+        );
+
+        for (AngsuranModel angsuran : angsuranList) {
+            model.addRow(new Object[]{
+                angsuran.getId(),
+                angsuran.getAngsuranke(),
+                angsuran.getNominalAngsuran(),
+                angsuran.getTanggalPembayaran() != null ? angsuran.getTanggalPembayaran().toString() : "-",
+                angsuran.getMetodePembayaran(),
+                angsuran.getStatus()
+            });
+        }
+
+        // Buat tabel dan scrollpane
+        JTable angsuranTable = new JTable(model);
+        angsuranTable.setEnabled(false); // biar tidak bisa di-edit
+        angsuranTable.setRowHeight(30);
+        JScrollPane scrollPane = new JScrollPane(angsuranTable);
+        scrollPane.setPreferredSize(new java.awt.Dimension(600, 250));
+
+        // Tampilkan popup
+        JOptionPane.showMessageDialog(
+            this,
+            scrollPane,
+            "Detail Angsuran Pinjaman ID: " + idPinjaman,
+            JOptionPane.PLAIN_MESSAGE
+        );
+    }//GEN-LAST:event_jButton1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;

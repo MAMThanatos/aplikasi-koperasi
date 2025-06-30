@@ -4,19 +4,50 @@
  */
 package views.nasabah.internalframes;
 
+import controllers.SimpananController;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+import models.SimpananModel;
 /**
  *
  * @author Aziz
  */
 public class SimpananView extends javax.swing.JInternalFrame {
-
+    private int idNasabah;
+    
     /**
      * Creates new form SimpananView
      */
-    public SimpananView() {
+    public SimpananView(int idNasabah) {
+        this.idNasabah = idNasabah;
+        
         initComponents();
+        loadTotalSimpananNasabah();
+        loadTableSimpananNasabah();
+    }
+    
+    private void loadTotalSimpananNasabah() {
+        int simpananTotal = SimpananController.getTotalSimpananNasabah(this.idNasabah);
+        jLabel6.setText("Rp. " + String.valueOf(simpananTotal));
     }
 
+    private void loadTableSimpananNasabah() {
+        List<SimpananModel> list = SimpananController.getAllSimpananNasabah(idNasabah);
+
+        DefaultTableModel model = new DefaultTableModel();
+        model.addColumn("Nominal Simpanan");
+        model.addColumn("Tanggal Uang Masuk");
+
+        for (SimpananModel simpanan : list) {
+            model.addRow(new Object[]{
+                simpanan.getNominal(),
+                simpanan.getTanggalUangMasuk() != null ? simpanan.getTanggalUangMasuk().toString() : "-"
+            });
+        }
+
+        jTable1.setModel(model);
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -35,21 +66,29 @@ public class SimpananView extends javax.swing.JInternalFrame {
 
         jLabel1.setText("Data Simpanan");
 
-        jLabel4.setText("Total Simapanan");
+        jLabel4.setText("Total Simpanan");
 
         jLabel5.setText("Riwayat Simpanan");
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Nominal", "Tanggal Uang Masuk"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         jLabel6.setText("Rp.");

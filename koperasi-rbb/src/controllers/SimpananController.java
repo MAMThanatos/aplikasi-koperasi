@@ -7,6 +7,7 @@ package controllers;
 import java.sql.Date;
 import models.SimpananModel;
 import repository.SimpananDAO;
+import java.util.List;
         
 /**
  *
@@ -21,5 +22,13 @@ public class SimpananController {
         simpanan.setTanggalUangMasuk(tglUangMasuk);
         
         return SimpananDAO.insert(simpanan);
+    }
+    
+    public static int getTotalSimpananNasabah(int idNasabah) {
+        return SimpananDAO.getTotalByIdNasabah(idNasabah);
+    }
+    
+    public static List<SimpananModel> getAllSimpananNasabah(int idNasabah) {
+        return SimpananDAO.getAllSimpananByIdNasabah(idNasabah);
     }
 }
